@@ -1,0 +1,94 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume & Cosmetics Store</title>
+    <!-- Add your CSS links here -->
+    <link rel="stylesheet" href="style.css">
+    
+</head>
+<body>
+    <!-- Header section -->
+    <header>
+        <div class="logo">
+            <h1>Perfume & Cosmetics Store</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main content section -->
+    <main>
+        <section class="hero">
+            <h2>Welcome to our Perfume & Cosmetics Store</h2>
+            <p>Discover the latest fragrances and beauty products.</p>
+            <a href="shopping.html" class="btn">Shop Now</a>
+
+        </section>
+
+        <section class="products">
+            <h2>Featured Products</h2>
+
+            <div class="product">
+                <img src="perfume1.jpg" alt="Perfume 1">
+                <h3>Perfume Name</h3>
+                <p>$50</p>
+                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
+            </div>
+            
+            <!-- HTML for adding products -->
+            <div class="product">
+                <img src="perfume1.jpg" alt="Perfume 1">
+                <h3>Perfume Name</h3>
+                <p>$50</p>
+                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
+            </div>
+            
+            <!-- HTML for adding products -->
+            <div class="product">
+                <img src="perfume1.jpg" alt="Perfume 1">
+                <h3>Perfume Name2</h3>
+                <p>$50</p>
+                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
+            </div>
+            <!-- Add more products as needed -->
+        </section>
+    </main>
+
+    <!-- Footer section -->
+    <footer>
+        <div class="logo">
+            <h1>Perfume & Cosmetics Store</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Products</a></li>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Contact Us</a></li>
+            </ul>
+        </nav>
+        <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
+    </footer>
+
+    <!-- Add your JavaScript links here -->
+    <script src="script.js"></script>
+    <script src="cart.js"></script>
+    <script>
+        // Function to add items to the cart and redirect to cart.html
+        function addToCart(name, price) {
+            // Add the item to cart (you can use AJAX to add to server-side cart as well)
+            // For now, we'll simply redirect to cart.html with the product details in the URL
+            window.location.href = `cart.html?product=${name}&price=${price}`;
+        }
+    </script>
+</body>
+</html>

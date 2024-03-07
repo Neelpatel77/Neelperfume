@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>  
+ <!-- Firebase App (the core Firebase SDK) is always required and must be first -->
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+
+<!-- Add Firebase Firestore -->
+<script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+</head>
+<body>
+    <!-- Checkout Form -->
+    <div class="checkout-form">
+        <h2>Checkout Form</h2>
+        <form id="checkoutForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Place Order</button>
+        </form>
+    </div>
+
+    <!-- Firebase SDK -->
+  
+    <script>
+
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
+  authDomain: "perfume-3c5fa.firebaseapp.com",
+  databaseURL: "https://perfume-3c5fa-default-rtdb.firebaseio.com",
+  projectId: "perfume-3c5fa",
+  storageBucket: "perfume-3c5fa.appspot.com",
+  messagingSenderId: "271666106212",
+  appId: "1:271666106212:web:29f47676d0ed9b67887471"
+};
+
+
+
+        firebase.initializeApp(firebaseConfig);
+
+        // Get a reference to the Firestore database
+        const db = firebase.firestore();
+
+        // Add event listener to the form for submission
+        document.getElementById('checkoutForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // Store the data in Firestore
+            db.collection("orders").add({
+                name: name,
+                email: email
+            })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+                // Clear form after successful submission
+                document.getElementById('checkoutForm').reset();
+                alert('Order placed successfully!');
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert('Error placing order. Please try again.');
+            });
+        });
+    </script>
+</body>
+</html>

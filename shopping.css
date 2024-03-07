@@ -1,0 +1,18 @@
+/* Additional styles specific to the shopping page */
+.products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.product {
+    width: 48%; /* Adjust as needed */
+    margin-bottom: 20px;
+}
+
+/* Ensure that products are displayed in pairs */
+@media screen and (max-width: 768px) {
+    .product {
+        width: 100%;
+    }
+}
