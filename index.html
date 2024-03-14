@@ -1,94 +1,100 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Perfume & Cosmetics Store</title>
-    <!-- Add your CSS links here -->
-    <link rel="stylesheet" href="style.css">
-    
+    <title>Your Firebase App</title>
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
-    <!-- Header section -->
-    <header>
-        <div class="logo">
-            <h1>Perfume & Cosmetics Store</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </nav>
-    </header>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js";
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
-    <!-- Main content section -->
-    <main>
-        <section class="hero">
-            <h2>Welcome to our Perfume & Cosmetics Store</h2>
-            <p>Discover the latest fragrances and beauty products.</p>
-            <a href="shopping.html" class="btn">Shop Now</a>
+        // Initialize Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
+            authDomain: "perfume-3c5fa.firebaseapp.com",
+            projectId: "perfume-3c5fa",
+            storageBucket: "perfume-3c5fa.appspot.com",
+            messagingSenderId: "271666106212",
+            appId: "1:271666106212:web:29f47676d0ed9b67887471"
+        };
+        const firebaseApp = initializeApp(firebaseConfig);
 
-        </section>
+        // Reference to Firebase authentication
+        const auth = getAuth(firebaseApp);
 
-        <section class="products">
-            <h2>Featured Products</h2>
+        // Check if user is logged in on every page load
+        window.onload = function() {
+            const isLoggedIn = checkLoggedIn();
+            if (!isLoggedIn && !isLoginPage()) {
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        };
 
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name</h3>
-                <p>$50</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
-            </div>
-            
-            <!-- HTML for adding products -->
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name</h3>
-                <p>$50</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
-            </div>
-            
-            <!-- HTML for adding products -->
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name2</h3>
-                <p>$50</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
-            </div>
-            <!-- Add more products as needed -->
-        </section>
-    </main>
-
-    <!-- Footer section -->
-    <footer>
-        <div class="logo">
-            <h1>Perfume & Cosmetics Store</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </nav>
-        <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
-    </footer>
-
-    <!-- Add your JavaScript links here -->
-    <script src="script.js"></script>
-    <script src="cart.js"></script>
-    <script>
-        // Function to add items to the cart and redirect to cart.html
-        function addToCart(name, price) {
-            // Add the item to cart (you can use AJAX to add to server-side cart as well)
-            // For now, we'll simply redirect to cart.html with the product details in the URL
-            window.location.href = `cart.html?product=${name}&price=${price}`;
+        // Function to check if user is on the login page
+        function isLoginPage() {
+            return window.location.pathname.includes('login.html');
         }
+
+        // Function to check if user is logged in
+        function checkLoggedIn() {
+            // Check if user is authenticated (you can implement this as per your Firebase setup)
+            // For simplicity, let's assume the user is logged in if the authentication state exists
+            return auth.currentUser !== null;
+        }
+
+        // Function to create a new account
+        function signup() {
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+
+            createUserWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    document.getElementById('signupMessage').textContent = "Account created successfully!";
+                    clearForm('signupForm');
+                })
+                .catch(error => {
+                    document.getElementById('signupMessage').textContent = error.message;
+                });
+        }
+
+        // Function to log in to an existing account
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    document.getElementById('loginMessage').textContent = "Login successful!";
+                    // Store authentication status in cookie
+                    document.cookie = "loggedIn=true; expires=Sat, 31 Dec 2030 12:00:00 UTC; path=/";
+                    clearForm('loginForm');
+                    // Redirect to index.html upon successful login
+                    window.location.href = 'index.html';
+                })
+                .catch(error => {
+                    document.getElementById('loginMessage').textContent = error.message;
+                });
+        }
+
+        // Function to clear form fields
+        function clearForm(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+        }
+
+        // Adding event listener to signup button after the function definition
+        document.getElementById('signupButton').addEventListener('click', signup);
+        document.getElementById('loginButton').addEventListener('click', login);
+
     </script>
 </body>
 </html>

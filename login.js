@@ -32,10 +32,13 @@ function login() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
-    auth.signInWithEmailAndPassword(email, password)
+    signInWithEmailAndPassword(auth, email, password)
         .then(() => {
             document.getElementById('loginMessage').textContent = "Login successful!";
             clearForm('loginForm');
+            console.log("Redirecting to index.html..."); // Add this line for debugging
+            // Redirect to index.html upon successful login
+            window.location.href = 'index.html';
         })
         .catch(error => {
             document.getElementById('loginMessage').textContent = error.message;
