@@ -77,14 +77,15 @@ function login() {
             });
     }
 
-        // Function to clear form fields
-        function clearForm(formId) {
-            const form = document.getElementById(formId);
-            const inputs = form.getElementsByTagName('input');
-            for (let i = 0; i < inputs.length; i++) {
-                inputs[i].value = '';
-            }
-        }
+       // Function to clear form fields
+function clearForm(formId) {
+    const form = document.getElementById(formId);
+    const inputs = form.getElementsByTagName('input');
+    for (let i = 0; i < inputs.length; i++) {
+        inputs[i].value = '';
+    }
+}
+
 
         // Adding event listener to signup button after the function definition
         document.getElementById('signupButton').addEventListener('click', signup);

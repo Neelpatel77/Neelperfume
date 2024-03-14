@@ -1,4 +1,3 @@
-// Initialize Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
     authDomain: "perfume-3c5fa.firebaseapp.com",
@@ -32,13 +31,10 @@ function login() {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
-    signInWithEmailAndPassword(auth, email, password)
+    auth.signInWithEmailAndPassword(email, password)
         .then(() => {
             document.getElementById('loginMessage').textContent = "Login successful!";
             clearForm('loginForm');
-            console.log("Redirecting to index.html..."); // Add this line for debugging
-            // Redirect to index.html upon successful login
-            window.location.href = 'index.html';
         })
         .catch(error => {
             document.getElementById('loginMessage').textContent = error.message;
@@ -53,3 +49,4 @@ function clearForm(formId) {
         inputs[i].value = '';
     }
 }
+

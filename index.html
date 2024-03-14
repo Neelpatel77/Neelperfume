@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,8 +79,11 @@
     </footer>
 
     <!-- Add your JavaScript links here -->
+ <script src="firebase-app.js"></script>
+    <script src="firebase-auth.js"></script>
     <script src="script.js"></script>
     <script src="cart.js"></script>
+    <script src="login.js"></script>
     <script>
         // Function to add items to the cart and redirect to cart.html
         function addToCart(name, price) {
@@ -90,7 +92,6 @@
             window.location.href = `cart.html?product=${name}&price=${price}`;
         }
     </script>
-        <script src="login.js" type="module"></script>
-
 </body>
 </html>
+
