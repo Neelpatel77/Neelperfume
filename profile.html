@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="profile.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile-img" onclick="goToProfile()">
+            <img src="avatar.jpg" alt="Profile Picture">
+        </div>
+        <div class="profile-name">John Doe</div>
+        <div class="profile-email">john.doe@example.com</div>
+        <!-- Add other profile details here -->
+    </div>
+
+    <!-- Add Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+
+    <!-- Your Firebase configuration and other JavaScript code -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
+            authDomain: "perfume-3c5fa.firebaseapp.com",
+            databaseURL: "https://perfume-3c5fa-default-rtdb.firebaseio.com",
+            projectId: "perfume-3c5fa",
+            storageBucket: "perfume-3c5fa.appspot.com",
+            messagingSenderId: "271666106212",
+            appId: "1:271666106212:web:78f54192781bdd1b887471"
+        };
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        // Reference to Firebase authentication
+        const auth = getAuth(firebaseApp);
+
+        // Your other JavaScript code using Firebase
+    </script>
+
+    <script src="profile.js" type="module"></script>
+</body>
+</html>
