@@ -1,25 +1,3 @@
-
-
-firebase.initializeApp(firebaseConfig);
-
-// Reference to Firebase authentication
-const auth = firebase.auth();
-
-// Function to check if user is logged in
-function checkLoggedIn() {
-    return new Promise((resolve, reject) => {
-        auth.onAuthStateChanged(user => {
-            if (user) {
-                // User is signed in
-                resolve(user);
-            } else {
-                // No user is signed in
-                reject();
-            }
-        });
-    });
-}
-
 // Function to redirect to login page
 function redirectToLogin() {
     window.location.href = 'login.html';
