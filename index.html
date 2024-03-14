@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +6,7 @@
     <title>Perfume & Cosmetics Store</title>
     <!-- Add your CSS links here -->
     <link rel="stylesheet" href="style.css">
-
+    <link rel="stylesheet" href="login.css">
 </head>
 <body>
     <!-- Header section -->
@@ -43,7 +42,7 @@
                 <p>$50</p>
                 <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
             </div>
-
+            
             <!-- HTML for adding products -->
             <div class="product">
                 <img src="perfume1.jpg" alt="Perfume 1">
@@ -51,7 +50,7 @@
                 <p>$50</p>
                 <button class="add-to-cart" onclick="addToCart('Perfume Name', 50)">Add to Cart</button>
             </div>
-
+            
             <!-- HTML for adding products -->
             <div class="product">
                 <img src="perfume1.jpg" alt="Perfume 1">
@@ -79,16 +78,55 @@
         <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
     </footer>
 
-    <!-- Add your JavaScript links here -->
-    <script src="script.js"></script>
-    <script src="cart.js"></script>
-    <script>
-        // Function to add items to the cart and redirect to cart.html
-        function addToCart(name, price) {
-            // Add the item to cart (you can use AJAX to add to server-side cart as well)
-            // For now, we'll simply redirect to cart.html with the product details in the URL
-            window.location.href = `cart.html?product=${name}&price=${price}`;
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
+            authDomain: "perfume-3c5fa.firebaseapp.com",
+            databaseURL: "https://perfume-3c5fa-default-rtdb.firebaseio.com",
+            projectId: "perfume-3c5fa",
+            storageBucket: "perfume-3c5fa.appspot.com",
+            messagingSenderId: "271666106212",
+            appId: "1:271666106212:web:78f54192781bdd1b887471"
+        };
+        const firebaseApp = initializeApp(firebaseConfig);
+
+        // Reference to Firebase authentication
+        const auth = getAuth(firebaseApp);
+
+        // Function to log in to an existing account
+        function login() {
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            signInWithEmailAndPassword(auth, email, password)
+                .then(() => {
+                    document.getElementById('loginMessage').textContent = "Login successful!";
+                    clearForm('loginForm');
+                    console.log("Redirecting to index.html..."); // Add this line for debugging
+                    // Redirect to index.html upon successful login
+                    window.location.href = 'index.html';
+                })
+                .catch(error => {
+                    document.getElementById('loginMessage').textContent = error.message;
+                });
         }
+
+        // Function to clear form fields
+        function clearForm(formId) {
+            const form = document.getElementById(formId);
+            const inputs = form.getElementsByTagName('input');
+            for (let i = 0; i < inputs.length; i++) {
+                inputs[i].value = '';
+            }
+        }
+
+        // Adding event listener to login button after the function definition
+        document.getElementById('loginButton').addEventListener('click', login);
+
     </script>
 </body>
 </html>
