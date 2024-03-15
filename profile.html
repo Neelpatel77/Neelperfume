@@ -1,29 +1,38 @@
+<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="profile.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-auth-compat.js"></script>
+
 </head>
 <body>
+
     <div class="container">
-        <div class="profile-img" onclick="goToProfile()">
-            <img src="avatar.jpg" alt="Profile Picture">
-        </div>
-        <div class="profile-name">John Doe</div>
-        <div class="profile-email">john.doe@example.com</div>
-        <!-- Add other profile details here -->
+        <!-- Profile image and other profile information -->
+
+        <!-- Welcome message -->
+        <div class="welcome-message"></div>
     </div>
 
-    <!-- Add Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js"></script>
+    <div class="container">
+        <div class="profile-img">
+            <img src="./img/avatar.jpg" width="10%" height="10%" alt="Profile Picture">
+        </div>
+        <div class="profile-info">
+            <h2>User Profile</h2>
+            <div class="profile-name">Name: </div>
+            <div class="profile-email">Order ID: </div>
+            <!-- Add other profile details here -->
+        </div>
+    </div>
 
-    <!-- Your Firebase initialization -->
-    <script src="firebase-init.js" type="module"></script>
+    <script src="firebase-init.js"></script>
+    <script src="profile.js"></script>
 
-    <!-- Your main JavaScript code -->
-    <script src="profile.js" type="module"></script>
 </body>
 </html>

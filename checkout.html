@@ -19,6 +19,12 @@
             <input type="text" id="name" name="name" required>
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required>
+            <label for="address">Address:</label>
+            <input type="text" id="address" name="address" required>
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required >
+            <label for="suite">Suite/House Number:</label>
+            <input type="text" id="suite" name="suite">
             <button type="submit">Place Order</button>
         </form>
     </div>
@@ -27,17 +33,15 @@
     <script>
 
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
-  authDomain: "perfume-3c5fa.firebaseapp.com",
-  databaseURL: "https://perfume-3c5fa-default-rtdb.firebaseio.com",
-  projectId: "perfume-3c5fa",
-  storageBucket: "perfume-3c5fa.appspot.com",
-  messagingSenderId: "271666106212",
-  appId: "1:271666106212:web:29f47676d0ed9b67887471"
-};
-
+    apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
+    authDomain: "perfume-3c5fa.firebaseapp.com",
+    databaseURL: "https://perfume-3c5fa-default-rtdb.firebaseio.com",
+    projectId: "perfume-3c5fa",
+    storageBucket: "perfume-3c5fa.appspot.com",
+    messagingSenderId: "271666106212",
+    appId: "1:271666106212:web:78f54192781bdd1b887471"
+  };
 
 
         firebase.initializeApp(firebaseConfig);
@@ -52,17 +56,26 @@ const firebaseConfig = {
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
+            const address = document.getElementById('address').value;
+            const phone = document.getElementById('phone').value;
+            const suite = document.getElementById('suite').value;
 
             // Store the data in Firestore
             db.collection("orders").add({
                 name: name,
-                email: email
+                email: email,
+                address: address,
+                phone: phone,
+                suite: suite
             })
             .then((docRef) => {
                 console.log("Document written with ID: ", docRef.id);
                 // Clear form after successful submission
                 document.getElementById('checkoutForm').reset();
                 alert('Order placed successfully!');
+
+                // Set the email in localStorage
+                localStorage.setItem('userEmail', email);
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -70,6 +83,6 @@ const firebaseConfig = {
             });
         });
     </script>
+ 
 </body>
 </html>
-
