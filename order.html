@@ -6,96 +6,11 @@
     <title>Place Order</title>
     <script src="https://js.stripe.com/v3/"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-        }
-
-        header {
-            background-color: #333;
-            color: #fff;
-            padding: 10px 0;
-            text-align: center;
-        }
-
-        .logo h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            text-align: center;
-        }
-
-        nav ul li {
-            display: inline;
-            margin-right: 10px;
-        }
-
-        nav ul li a {
-            color: #fff;
-            text-decoration: none;
-        }
-
-        .checkout {
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #fff;
-            border-radius: 5px;
-            width: 50%;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .checkout h2 {
-            margin-top: 0;
-            text-align: center;
-        }
-
-        .checkout button {
-            padding: 10px 20px;
-            background-color: #333;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: block;
-            margin: 0 auto;
-        }
-
-        .checkout button:hover {
-            background-color: #555;
-        }
-
-        #card-element {
-            margin-top: 20px;
-        }
-
-        #card-errors {
-            color: red;
-            margin-top: 10px;
-        }
+        /* Your CSS styles here */
     </style>
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <h1>Place Order</h1>
-        </div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Products</a></li>
-                <li><a href="#">About Us</a></li>
-                <li><a href="#">Contact Us</a></li>
-            </ul>
-        </nav>
-    </header>
-
+    <!-- Your HTML content here -->
     <div class="checkout">
         <h2>Complete Your Order</h2>
         <form id="payment-form">
@@ -103,11 +18,116 @@
                 <!-- Stripe.js injects the Card Element -->
             </div>
             <div id="card-errors" role="alert"></div>
+             <div id="amount-display">Amount: $4.00</div> <!-- Display fixed amount -->
             <button id="submit">Place Order</button>
         </form>
     </div>
+ 
+
+    <script>
+        var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
+        var elements = stripe.elements();
+
+        var style = {
+            base: {
+                fontFamily: 'Arial, sans-serif',
+                fontSize: '16px',
+                color: '#32325d',
+            }
+        };
+
+        var cardElement = elements.create('card', { style: style });
+
+        cardElement.mount('#card-element');
+
+        cardElement.on('change', function(event) {
+            var displayError = document.getElementById('card-errors');
+            if (event.error) {
+                displayError.textContent = event.error.message;
+            } else {
+                displayError.textContent = '';
+            }
+        });
+
+        var form = document.getElementById('payment-form');
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            stripe.createToken(cardElement).then(function(result) {
+                if (result.error) {
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server
+                    console.log(result.token);
+                    // Here you can make AJAX call to your server to process the payment
+                }
+            });
+        });
+    </script>
+
 <script>
-    var stripe = Stripe('your_publishable_key');
+    // Your existing client-side code for handling payment submission
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        stripe.createToken(cardElement).then(function(result) {
+            if (result.error) {
+                var errorElement = document.getElementById('card-errors');
+                errorElement.textContent = result.error.message;
+            } else {
+                // Send the token to your server
+                console.log(result.token);
+                fetch('/process_payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ token: result.token }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if (data.success) {
+                        // Payment successful, display a success message
+                        showMessage(data.message);
+                    } else {
+                        // Payment failed, display an error message
+                        showMessage(data.error);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showMessage('An unexpected error occurred');
+                });
+            }
+        });
+    });
+
+    // Function to display a message to the user
+    function showMessage(messageText) {
+        var messageContainer = document.getElementById('payment-message');
+        messageContainer.classList.remove('hidden');
+        messageContainer.textContent = messageText;
+
+        setTimeout(function () {
+            messageContainer.classList.add('hidden');
+            messageContainer.textContent = '';
+        }, 4000);
+    }
+</script>
+
+    <script src="stripe.js"></script>
+</body>
+</html>
+
+
+<!-- 
+
+<script>
+    var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
     var elements = stripe.elements();
 
     var style = {
@@ -147,6 +167,4 @@
             }
         });
     });
-</script>
-</body>
-</html>
+</script> -->

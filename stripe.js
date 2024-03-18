@@ -1,8 +1,7 @@
-var stripe = Stripe('sk_test_51OrWHjKFZxX1eOCT9RuXUOxUpdOTgaSrPREjtyVfU8HGt5xwRWhnCajmyDem4F3s2H9fizGWxk8hUpbw3tMlFJLT009uz0Lgzh');
+var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
 var elements = stripe.elements();
 
 var card = elements.create('card', {
-    // Add additional styles for the card element
     style: {
         base: {
             fontSize: '16px',
@@ -10,8 +9,7 @@ var card = elements.create('card', {
             color: '#32325d',
         },
     },
-    // Specify additional parameters for the card element
-    hidePostalCode: true, // Hide the postal code field
+    hidePostalCode: true,
     classes: {
         base: 'stripe-input',
         complete: 'stripe-input--complete',
@@ -40,13 +38,10 @@ form.addEventListener('submit', function(event) {
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
         } else {
-            // Send the token to your server along with order data from the checkout page
             var orderData = {
                 token: result.token,
-                // Include additional order data as needed
             };
 
-            // Example of sending the order data to the server using fetch
             fetch('/process_payment', {
                 method: 'POST',
                 headers: {
@@ -56,12 +51,31 @@ form.addEventListener('submit', function(event) {
             })
             .then(response => response.json())
             .then(data => {
-                // Handle response from server
                 console.log(data);
+                if (data.success) {
+                    // Payment successful, display a success message
+                    showMessage(data.message);
+                } else {
+                    // Payment failed, display an error message
+                    showMessage(data.error);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
+                showMessage('An unexpected error occurred');
             });
         }
     });
 });
+
+// Function to display a message to the user
+function showMessage(messageText) {
+    var messageContainer = document.getElementById('payment-message');
+    messageContainer.classList.remove('hidden');
+    messageContainer.textContent = messageText;
+
+    setTimeout(function () {
+        messageContainer.classList.add('hidden');
+        messageContainer.textContent = '';
+    }, 4000);
+}
