@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfume & Cosmetics Store</title>
     <!-- Add your CSS links here -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
@@ -30,33 +30,33 @@
             <h2>Welcome to our Perfume & Cosmetics Store</h2>
             <p>Discover the latest fragrances and beauty products.</p>
             <a href="shopping.html" class="btn">Shop Now</a>
-
         </section>
 
         <section class="products">
             <h2>Featured Products</h2>
 
+            <!-- Product 1 -->
             <div class="product">
                 <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name</h3>
+                <h3>Perfume Name1</h3>
                 <p>$4</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 4)">Add to Cart</button>
+                <button class="add-to-cart" data-name="Victorious" data-price="4">Add to Cart</button>
             </div>
             
-            <!-- HTML for adding products -->
+            <!-- Product 2 -->
             <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name</h3>
-                <p>$4</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 4)">Add to Cart</button>
-            </div>
-            
-            <!-- HTML for adding products -->
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
+                <img src="perfume2.jpg" alt="Perfume 1">
                 <h3>Perfume Name2</h3>
-                <p>$4</p>
-                <button class="add-to-cart" onclick="addToCart('Perfume Name', 4)">Add to Cart</button>
+                <p>$7</p>
+                <button class="add-to-cart" data-name="Dior" data-price="6">Add to Cart</button>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product">
+                <img src="perfume1.jpg" alt="Perfume 1">
+                <h3>Dior</h3>
+                <p>$6</p>
+                <button class="add-to-cart" data-name="Tom Ford" data-price="4">Add to Cart</button>
             </div>
             <!-- Add more products as needed -->
         </section>
@@ -127,6 +127,37 @@
         // Adding event listener to login button after the function definition
         document.getElementById('loginButton').addEventListener('click', login);
 
+    </script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+        const addToCartButtons = document.querySelectorAll('.add-to-cart');
+        addToCartButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.getAttribute('data-name');
+                const price = parseFloat(this.getAttribute('data-price'));
+                
+                // Retrieve existing cart items from localStorage
+                let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                
+                // Check if the item is already in the cart
+                const existingItemIndex = cartItems.findIndex(item => item.name === name);
+                if (existingItemIndex !== -1) {
+                    // If the item already exists in the cart, update its quantity
+                    cartItems[existingItemIndex].quantity++;
+                } else {
+                    // If the item is not in the cart, add it as a new item
+                    cartItems.push({ name: name, price: price, quantity: 1 });
+                }
+                
+                // Save the updated cart items back to localStorage
+                localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                
+                // Redirect the user to the cart page
+                window.location.href = 'cart.html';
+            });
+        });
+    });
     </script>
 </body>
 </html>

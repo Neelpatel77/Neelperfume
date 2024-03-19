@@ -96,7 +96,6 @@ function decreaseQuantity(index) {
 function updateTotalAmount() {
     totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
-
 // Function to render the cart
 function renderCart() {
     const cartList = document.getElementById('cart-list');
@@ -123,8 +122,13 @@ function renderCart() {
         decreaseButton.textContent = '-';
         decreaseButton.addEventListener('click', () => decreaseQuantity(cartItems.indexOf(item)));
 
+        const removeButton = document.createElement('button'); // Create remove button
+        removeButton.textContent = 'Remove'; // Set remove button text
+        removeButton.addEventListener('click', () => removeFromCart(cartItems.indexOf(item))); // Add click event listener for removal
+
         listItem.appendChild(increaseButton);
         listItem.appendChild(decreaseButton);
+        listItem.appendChild(removeButton); // Append remove button to list item
 
         // Add the list item to the cart
         cartList.appendChild(listItem);
