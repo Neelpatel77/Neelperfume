@@ -28,7 +28,6 @@ card.addEventListener('change', function(event) {
         displayError.textContent = '';
     }
 });
-
 var form = document.getElementById('payment-form');
 form.addEventListener('submit', function(event) {
     event.preventDefault();
@@ -38,8 +37,12 @@ form.addEventListener('submit', function(event) {
             var errorElement = document.getElementById('card-errors');
             errorElement.textContent = result.error.message;
         } else {
+            // Retrieve total amount from localStorage and parse it as a number
+            const totalAmount = parseFloat(localStorage.getItem('totalAmount'));
+
             var orderData = {
                 token: result.token,
+                totalAmount: totalAmount // Include total amount in the order data
             };
 
             fetch('/process_payment', {
@@ -67,6 +70,7 @@ form.addEventListener('submit', function(event) {
         }
     });
 });
+
 
 // Function to display a message to the user
 function showMessage(messageText) {

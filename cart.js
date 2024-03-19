@@ -1,5 +1,7 @@
 // Define a variable to store the cart items
 let cartItems = [];
+let totalAmount = 0; // Add a global variable to store the total amount
+let productDetails = []; // Add a global variable to store product details
 
 // Load cart state from localStorage when the page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -10,9 +12,22 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Load product details from localStorage when the page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const savedProductDetails = localStorage.getItem('productDetails');
+    if (savedProductDetails) {
+        productDetails = JSON.parse(savedProductDetails);
+    }
+});
+
 // Function to save cart state to localStorage
 function saveCartState() {
     localStorage.setItem('cartItems', JSON.stringify(cartItems));
+}
+
+// Function to save product details to localStorage
+function saveProductDetails() {
+    localStorage.setItem('productDetails', JSON.stringify(productDetails));
 }
 
 // Function to add items to the cart
@@ -27,31 +42,59 @@ function addToCart(name, price) {
         cartItems.push({ name: name, price: price, quantity: 1 });
     }
 
+    // Update total amount
+    updateTotalAmount();
+
+    // Save cart state after updating
+    saveCartState();
+
     renderCart();
-    saveCartState(); // Save cart state after updating
 }
 
 // Function to remove items from the cart
 function removeFromCart(index) {
     cartItems.splice(index, 1);
+
+    // Update total amount
+    updateTotalAmount();
+
+    // Save cart state after updating
+    saveCartState();
+
     renderCart();
-    saveCartState(); // Save cart state after updating
 }
 
 // Function to increase quantity of items in the cart
 function increaseQuantity(index) {
     cartItems[index].quantity++;
+
+    // Update total amount
+    updateTotalAmount();
+
+    // Save cart state after updating
+    saveCartState();
+
     renderCart();
-    saveCartState(); // Save cart state after updating
 }
 
 // Function to decrease quantity of items in the cart
 function decreaseQuantity(index) {
     if (cartItems[index].quantity > 1) {
         cartItems[index].quantity--;
+
+        // Update total amount
+        updateTotalAmount();
+
+        // Save cart state after updating
+        saveCartState();
+
         renderCart();
-        saveCartState(); // Save cart state after updating
     }
+}
+
+// Function to calculate total amount
+function updateTotalAmount() {
+    totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 
 // Function to render the cart
@@ -91,6 +134,7 @@ function renderCart() {
     });
 
     // Update total price
+    totalAmount = totalPrice; // Update the totalAmount variable
     totalElement.textContent = `Total: $${totalPrice}`;
 }
 
@@ -101,12 +145,22 @@ function getURLParams() {
     const price = parseInt(params.get('price'));
     if (product && price) {
         addToCart(product, price);
+        // Save product details
+        productDetails.push({ name: product, price: price });
+        saveProductDetails();
     }
 }
 
 function placeOrder() {
-    window.location.href = 'checkout.html';
+    // Set the total amount in localStorage for retrieval on the checkout page
+    localStorage.setItem('totalAmount', totalAmount);
+
+    // Set product details in localStorage for retrieval on the checkout page
+    localStorage.setItem('productDetails', JSON.stringify(productDetails));
+
+    window.location.href = 'order.html';
 }
+
 // Call getURLParams() function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     getURLParams();

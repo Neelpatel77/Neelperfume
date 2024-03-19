@@ -53,24 +53,24 @@
 <div class="product">
     <img src="perfume1.jpg" alt="Perfume 1">
     <h3>Perfume Name1</h3>
-    <p>$50</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name1', 50)">Add to Cart</button>
+    <p>$4</p>
+    <button class="add-to-cart" onclick="addToCart('Perfume Name1', 4)">Add to Cart</button>
 </div>
 
 <!-- HTML for adding products -->
 <div class="product">
     <img src="perfume1.jpg" alt="Perfume 1">
     <h3>Perfume Name2</h3>
-    <p>$50</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name2', 50)">Add to Cart</button>
+    <p>$4</p>
+    <button class="add-to-cart" onclick="addToCart('Perfume Name2', 4)">Add to Cart</button>
 </div>
 
 <!-- HTML for adding products -->
 <div class="product">
     <img src="perfume1.jpg" alt="Perfume 1">
     <h3>Perfume Name3</h3>
-    <p>$50</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name3', 50)">Add to Cart</button>
+    <p>$4</p>
+    <button class="add-to-cart" onclick="addToCart('Perfume Name3', 4)">Add to Cart</button>
 </div>
 
     <!-- Add more products as needed -->
@@ -86,5 +86,7 @@
             window.location.href = `cart.html?product=${name}&price=${price}`;
         }
     </script>
+    <script src="cart.js"></script>
+    <script src="stripe.js" type="module"></script>
 </body>
 </html>

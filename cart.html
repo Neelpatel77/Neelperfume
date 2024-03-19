@@ -108,8 +108,14 @@
 
     <div class="checkout">
         <h3 id="total">Total: $0</h3>
-        <button type="submit" onclick="placeOrder()">Place Order</button>
+        <button type="button" onclick="placeOrder()">Place Order</button>
     </div>
     <script src="cart.js"></script>
+    <script>
+        // Call getURLParams() function when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            getURLParams();
+        });
+    </script>
 </body>
 </html>
