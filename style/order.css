@@ -115,3 +115,33 @@ nav ul li a {
 #total-amount {
     font-weight: bold;
 }
+
+/* Add this to your order.css file */
+
+/* Style for the "Place Order" button */
+#submit {
+    padding: 10px 20px;
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+}
+
+#submit:hover {
+    background-color: #555;
+}
+
+/* Style for the payment section */
+#payment-form {
+    margin-top: 20px;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+}
+
+#card-element {
+    margin-bottom: 20px;
+}

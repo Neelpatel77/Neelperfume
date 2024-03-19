@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,7 +53,7 @@
 
     <!-- Firebase and Stripe JavaScript code -->
     <script>
-         function displayProductDetails() {
+        function displayProductDetails() {
             const productList = document.getElementById('product-list');
             // Retrieve product details from localStorage
             let productDetails = JSON.parse(localStorage.getItem('productDetails')) || [];
@@ -127,7 +128,6 @@
                 }
             });
         });
-        
 
         var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
         var elements = stripe.elements();
@@ -149,26 +149,15 @@
             }
         });
 
-        // Function to display product details from localStorage
-        function displayProductDetails() {
-            const productList = document.getElementById('product-list');
-            // Retrieve product details from localStorage
-            let productDetails = JSON.parse(localStorage.getItem('productDetails')) || [];
-            productDetails.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${item.name} - $${item.price}`;
-                productList.appendChild(listItem);
-            });
-        }
-
         // Function to retrieve cart items from localStorage
         function getCartItems() {
-    const cartItems = JSON.parse(localStorage.getItem('productDetails')) || [];
-    console.log(cartItems); // Console log the cart items
-    return cartItems;
-}
-       // Function to display a message to the user
-       function showMessage(messageText) {
+            const cartItems = JSON.parse(localStorage.getItem('productDetails')) || [];
+            console.log(cartItems); // Console log the cart items
+            return cartItems;
+        }
+
+        // Function to display a message to the user
+        function showMessage(messageText) {
             var messageContainer = document.getElementById('payment-message');
             messageContainer.classList.remove('hidden');
             messageContainer.textContent = messageText;
@@ -178,10 +167,4 @@
             }, 4000);
         }
     </script>
-    <script>
-        //  to display product details from localStorage
-        scr = "stripe.js"
-
-    </script>
-</body>
-</html>
+    <script
