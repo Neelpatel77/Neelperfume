@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+</head>
+<body>
+    <!-- JavaScript for handling search and product display -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Define the array of products (replace this with your actual product data)
+            const products = [
+                { name: 'Perfume Name1', price: 4 },
+                { name: 'Perfume Name2', price: 7 },
+                { name: 'Dior', price: 6 },
+                { name: 'Tom Ford', price: 4 }
+            ];
+
+            // Function to retrieve search query from URL parameters
+            function getSearchQuery() {
+                const params = new URLSearchParams(window.location.search);
+                return params.get('search') || ''; // Return empty string if search query is not provided
+            }
+
+            const searchQuery = getSearchQuery();
+
+            // Function to filter products based on search query
+            function filterProducts(query) {
+                return products.filter(product =>
+                    product.name.toLowerCase().includes(query.toLowerCase())
+                );
+            }
+
+            // Function to display filtered products
+            function displayProducts(products) {
+                // Log the products to the console for demonstration
+                console.log(products);
+                // You can further process the products as needed (e.g., displaying them on the page)
+            }
+
+            // Call the functions to handle search and display results
+            const filteredProducts = filterProducts(searchQuery);
+            displayProducts(filteredProducts);
+        });
+    </script>
+</body>
+</html>

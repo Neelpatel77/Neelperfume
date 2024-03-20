@@ -15,68 +15,80 @@ Firebase few data are missing so send them -->
 
 </head>
 <body>
+
+   
+
     <!-- Header section -->
     <header>
+        <div class="search-container">
+            <form id="searchForm" action="#" method="GET"> <!-- Update form action -->
+                <input type="text" id="searchInput" placeholder="Search products..." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        
+        
         <div class="profile-logo">
+            
             <a href="profile.html">
                 <i class="fas fa-user-circle"></i>
             </a>
+         
         </div>
         <!-- logo -->
         <div class="title">
             <img src="img/Logo.jpg" alt="Ardior Logo">
         </div>
-        
+    
+        <!-- Search bar -->
+     
+    
         <div class="navlink">
-        <nav >
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shopping.html">Products</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="cart.html">cart</a></li>
-            </ul>
-        </nav>
-    </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shopping.html">Products</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="cart.html">cart</a></li>
+                </ul>
+            </nav>
+        </div>
     </header>
+    
     
 
     <!-- Main content section -->
     <main>
         <section class="hero">
             <h3>Welcome to our Perfume & Cosmetics Store</h3>
-
-            <img src="img/Home.png" alt="Perfume & Cosmetics Store"   width="100%"  ><br>
-
-            
+            <div class="hero-image">
+                <img src="img/Home.png" alt="Perfume & Cosmetics Store">
+            </div>
             <a href="shopping.html" class="btn">Shop Now</a>
         </section>
-        
- <h2>Featured Products</h2>
+        <h2>Featured Products</h2>
+       
+       
         <section class="products">
-         
-
             <!-- Product 1 -->
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Perfume Name1</h3>
-                <p>$4</p>
-                <button class="add-to-cart" data-name="Victorious" data-price="4">Add to Cart</button>
+            <div class="product" id="product1">
+                <h3 id="productName1">Perfume Name1</h3>
+                <p id="productPrice1">$4</p>
+                <button class="add-to-cart" data-id="1">Add to Cart</button>
             </div>
-            
+    
             <!-- Product 2 -->
-            <div class="product">
-                <img src="perfume2.jpg" alt="Perfume 1">
-                <h3>Perfume Name2</h3>
-                <p>$7</p>
-                <button class="add-to-cart" data-name="Dior" data-price="6">Add to Cart</button>
+            <div class="product" id="product2">
+                <h3 id="productName2">Perfume Name2</h3>
+                <p id="productPrice2">$7</p>
+                <button class="add-to-cart" data-id="2">Add to Cart</button>
             </div>
-            
+    
             <!-- Product 3 -->
-            <div class="product">
-                <img src="perfume1.jpg" alt="Perfume 1">
-                <h3>Dior</h3>
-                <p>$6</p>
-                <button class="add-to-cart" data-name="Tom Ford" data-price="4">Add to Cart</button>
+            <div class="product" id="product3">
+                <h3 id="productName3">Dior</h3>
+                <p id="productPrice3">$6</p>
+                <button class="add-to-cart" data-id="3">Add to Cart</button>
             </div>
             <!-- Add more products as needed -->
         </section>
@@ -181,5 +193,36 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to fetch product data from the server
+        function fetchProductData(productId) {
+            fetch(`/product/${productId}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Product not found'); // Throw custom error message for 404
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the product data received from the server
+                    console.log(data);
+                    // Update your HTML dynamically with the product data
+                })
+                .catch(error => {
+                    console.error('Error fetching product data:', error.message);
+                });
+        }
+
+        // Add event listeners or other JavaScript logic as needed
+        // For example, when a user clicks on a product link:
+        document.getElementById('product1').addEventListener('click', function() {
+            fetchProductData('1');
+        });
+
+        // Repeat the above for other product links/buttons
+    });
+</script>
 </body>
 </html>
+
