@@ -1,3 +1,7 @@
+<!-- Fix the twice print of the product items
+Fix the login if index is hit then it shouod check login first and provide login period 
+Firebase few data are missing so send them -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,14 +11,24 @@
     <!-- Add your CSS links here -->
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
 </head>
 <body>
     <!-- Header section -->
     <header>
-        <div class="logo">
-            <h1>Perfume & Cosmetics Store</h1>
+        <div class="profile-logo">
+            <a href="profile.html">
+                <i class="fas fa-user-circle"></i>
+            </a>
         </div>
-        <nav>
+        <!-- logo -->
+        <div class="title">
+            <img src="img/Logo.jpg" alt="Ardior Logo">
+        </div>
+        
+        <div class="navlink">
+        <nav >
             <ul>
                 <li><a href="#">Home</a></li>
                 <li><a href="#">Products</a></li>
@@ -22,7 +36,9 @@
                 <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
+    </div>
     </header>
+    
 
     <!-- Main content section -->
     <main>
@@ -31,9 +47,9 @@
             <p>Discover the latest fragrances and beauty products.</p>
             <a href="shopping.html" class="btn">Shop Now</a>
         </section>
-
+ <h2>Featured Products</h2>
         <section class="products">
-            <h2>Featured Products</h2>
+         
 
             <!-- Product 1 -->
             <div class="product">
