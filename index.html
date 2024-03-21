@@ -68,26 +68,33 @@
         <section class="products">
             <!-- Product 1 -->
             <div class="product" id="product1">
-                <h3 id="productName1">Perfume Name1</h3>
-                <p id="productPrice1">$4</p>
-                <button class="add-to-cart" data-id="1">Add to Cart</button>
+                <a href="/product/1"> <!-- Link to product 1 -->
+                     <h3 id="productName1">Perfume Name1</h3>
+                    <p id="productPrice1">$4</p>
+                </a>
+                <button class="add-to-cart" data-name="Victorious" data-price="4">Add to Cart</button>
             </div>
     
             <!-- Product 2 -->
             <div class="product" id="product2">
-                <h3 id="productName2">Perfume Name2</h3>
-                <p id="productPrice2">$7</p>
-                <button class="add-to-cart" data-id="2">Add to Cart</button>
+                <a href="/product/2"> <!-- Link to product 2 -->
+                     <h3 id="productName2">Perfume Name2</h3>
+                    <p id="productPrice2">$7</p>
+                </a>
+                <button class="add-to-cart" data-name="Dior" data-price="6">Add to Cart</button>
             </div>
     
             <!-- Product 3 -->
             <div class="product" id="product3">
-                <h3 id="productName3">Dior</h3>
-                <p id="productPrice3">$6</p>
-                <button class="add-to-cart" data-id="3">Add to Cart</button>
+                <a href="/product/3"> <!-- Link to product 3 -->
+                     <h3 id="productName3">Dior</h3>
+                    <p id="productPrice3">$6</p>
+                </a>
+                <button class="add-to-cart" data-name="Tom Ford" data-price="4">Add to Cart</button>
             </div>
             <!-- Add more products as needed -->
         </section>
+    
     </main>
 
     <!-- Footer section -->
@@ -109,10 +116,14 @@
     </footer>
 
 
-    <!-- Firebase SDK -->
+
+   
+    
+
+
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
@@ -127,23 +138,35 @@
 
         const auth = getAuth(firebaseApp);
 
-        // Check if the user has successfully logged in
-        if (sessionStorage.getItem('loggedIn') === 'true') {
-            // User is logged in, redirect to index.html
-            window.location.href = 'index.html';
+        let timeout;
+
+        function startSessionTimeout() {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+        // Log out the user when the session expires
+        signOut(auth).then(() => {
+            console.log("User logged out due to session expiration");
+            // Redirect to login page
+            window.location.href = 'login.html';
+        }).catch((error) => {
+            console.error("Error logging out:", error);
+        });
+    }, 60 * 1000); // 1 minute
+}
+
+
+        function resetSessionTimeout() {
+            clearTimeout(timeout);
+            startSessionTimeout();
         }
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 // User is signed in.
                 console.log("User is signed in");
-                // Set flag indicating successful login
-                sessionStorage.setItem('loggedIn', 'true');
-                // Redirect to login page after 20 seconds
-                setTimeout(() => {
-                    console.log("Redirecting to login page...");
-                    window.location.href = 'login.html';
-                }, 20000); // 20 seconds in milliseconds
+                // Start session timeout
+                startSessionTimeout();
+                // Redirect to index.html
             } else {
                 // No user is signed in.
                 console.log("No user is signed in");
@@ -152,38 +175,11 @@
             }
         });
 
-        // Function to log in to an existing account
-        function login() {
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
+        document.addEventListener("mousemove", resetSessionTimeout);
+        document.addEventListener("keypress", resetSessionTimeout);
+    </script>
+    
 
-            signInWithEmailAndPassword(auth, email, password)
-                .then(() => {
-                    document.getElementById('loginMessage').textContent = "Login successful!";
-                    clearForm('loginForm');
-                    console.log("Redirecting to index.html..."); // Add this line for debugging
-                    // Set flag indicating successful login
-                    sessionStorage.setItem('loggedIn', 'true');
-                    // Redirect to index.html upon successful login
-                    window.location.href = 'index.html';
-                })
-                .catch(error => {
-                    document.getElementById('loginMessage').textContent = error.message;
-                });
-        }
-
-        // Function to clear form fields
-        function clearForm(formId) {
-            const form = document.getElementById(formId);
-            const inputs = form.getElementsByTagName('input');
-            for (let i = 0; i < inputs.length; i++) {
-                inputs[i].value = '';
-            }
-        }
-
-        // Adding event listener to login button after the function definition
-        document.getElementById('loginButton').addEventListener('click', login);
-</script>
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -215,7 +211,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     </script>
-    <script src="login.js" type="module"></script>
+    <script src="productview.js"></script>
 </body>
 </html> 
 
