@@ -1,7 +1,3 @@
-<!-- Fix the twice print of the product items
-Fix the login if index is hit then it shouod check login first and provide login period 
-Firebase few data are missing so send them -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -112,10 +108,11 @@ Firebase few data are missing so send them -->
         <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
     </footer>
 
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
+        import { getAuth, signInWithEmailAndPassword,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
@@ -128,8 +125,32 @@ Firebase few data are missing so send them -->
         };
         const firebaseApp = initializeApp(firebaseConfig);
 
-        // Reference to Firebase authentication
         const auth = getAuth(firebaseApp);
+
+        // Check if the user has successfully logged in
+        if (sessionStorage.getItem('loggedIn') === 'true') {
+            // User is logged in, redirect to index.html
+            window.location.href = 'index.html';
+        }
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                // User is signed in.
+                console.log("User is signed in");
+                // Set flag indicating successful login
+                sessionStorage.setItem('loggedIn', 'true');
+                // Redirect to login page after 20 seconds
+                setTimeout(() => {
+                    console.log("Redirecting to login page...");
+                    window.location.href = 'login.html';
+                }, 20000); // 20 seconds in milliseconds
+            } else {
+                // No user is signed in.
+                console.log("No user is signed in");
+                // Redirect to login page
+                window.location.href = 'login.html';
+            }
+        });
 
         // Function to log in to an existing account
         function login() {
@@ -141,6 +162,8 @@ Firebase few data are missing so send them -->
                     document.getElementById('loginMessage').textContent = "Login successful!";
                     clearForm('loginForm');
                     console.log("Redirecting to index.html..."); // Add this line for debugging
+                    // Set flag indicating successful login
+                    sessionStorage.setItem('loggedIn', 'true');
                     // Redirect to index.html upon successful login
                     window.location.href = 'index.html';
                 })
@@ -160,8 +183,7 @@ Firebase few data are missing so send them -->
 
         // Adding event listener to login button after the function definition
         document.getElementById('loginButton').addEventListener('click', login);
-
-    </script>
+</script>
 
     <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -193,36 +215,9 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     </script>
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to fetch product data from the server
-        function fetchProductData(productId) {
-            fetch(`/product/${productId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Product not found'); // Throw custom error message for 404
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Handle the product data received from the server
-                    console.log(data);
-                    // Update your HTML dynamically with the product data
-                })
-                .catch(error => {
-                    console.error('Error fetching product data:', error.message);
-                });
-        }
-
-        // Add event listeners or other JavaScript logic as needed
-        // For example, when a user clicks on a product link:
-        document.getElementById('product1').addEventListener('click', function() {
-            fetchProductData('1');
-        });
-
-        // Repeat the above for other product links/buttons
-    });
-</script>
+    <script src="login.js" type="module"></script>
 </body>
-</html>
+</html> 
+
+
 
