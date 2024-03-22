@@ -1,14 +1,25 @@
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 
 const app = express();
 
-// Middleware
+// Middleware setup
 app.use(bodyParser.json());
 
 // Serve static files from the 'neelperfume' directory
-app.use(express.static(path.join(__dirname, 'neelperfume')));
+// Add this line before serving static files to set the correct MIME type for JavaScript files
+app.use(express.static(__dirname));
+
+app.use(express.static('neelperfume', {
+    setHeaders: (res, filePath) => {
+        if (filePath.endsWith('.js')) {
+            res.setHeader('Content-Type', 'text/javascript');
+        }
+    }
+}));
+app.use('/css', express.static(path.join(__dirname, 'css')));
 
 // Serve static files from the 'style' directory
 app.use('/style', express.static(path.join(__dirname, 'style'), { 'extensions': ['css'] }));
@@ -23,6 +34,9 @@ const productData = [
     { id: '2', name: 'Product 2', price: 20 },
     { id: '3', name: 'Product 3', price: 30 }
 ];
+
+// Initialize an empty cart
+let cartItems = [];
 
 // Serve index.html for root route and /product route
 app.get(['/', '/product'], (req, res) => {
@@ -45,15 +59,40 @@ app.get('/login.html', (req, res) => {
         res.status(500).send('Internal Server Error');
     }
 });
-app.get('/index.html', (req, res) => {
+
+// Serve order.html
+app.get('/order.html', (req, res) => {
     try {
-        console.log('Serving index.html');
-        res.sendFile(path.resolve(__dirname, 'index.html'));
+        console.log('Serving order.html');
+        res.sendFile(path.resolve(__dirname, 'order.html'));
     } catch (error) {
-        console.error('Error serving index.html:', error);
+        console.error('Error serving order.html:', error);
         res.status(500).send('Internal Server Error');
     }
 });
+
+// Serve cart.html
+app.get('/cart.html', (req, res) => {
+    try {
+        console.log('Serving cart.html');
+        res.sendFile(path.resolve(__dirname, 'cart.html'));
+    } catch (error) {
+        console.error('Error serving cart.html:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
+// Serve shopping.html
+app.get('/shopping.html', (req, res) => {
+    try {
+        console.log('Serving shopping.html');
+        res.sendFile(path.resolve(__dirname, 'shopping.html'));
+    } catch (error) {
+        console.error('Error serving shopping.html:', error);
+        res.status(500).send('Internal Server Error');
+    }
+});
+
 // Handle product routes
 app.get('/product/:id', (req, res) => {
     try {
@@ -75,6 +114,26 @@ app.get('/product/:id', (req, res) => {
     } catch (error) {
         console.error('Error fetching product details:', error);
         res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
+// Route for adding items to the cart
+app.post('/add_to_cart', (req, res) => {
+    try {
+        const { id, name, price } = req.body;
+        // Check if the item is already in the cart
+        const existingItemIndex = cartItems.findIndex(item => item.id === id);
+        if (existingItemIndex !== -1) {
+            // If the item already exists in the cart, update its quantity
+            cartItems[existingItemIndex].quantity++;
+        } else {
+            // If the item is not in the cart, add it as a new item
+            cartItems.push({ id, name, price, quantity: 1 });
+        }
+        res.json({ success: true, message: 'Item added to cart successfully' });
+    } catch (error) {
+        console.error('Error adding item to cart:', error);
+        res.status(500).json({ error: 'An error occurred while adding item to cart' });
     }
 });
 

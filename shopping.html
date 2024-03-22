@@ -5,89 +5,106 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfume & Cosmetics Store</title>
     <!-- Add your CSS links here -->
-    <link rel="stylesheet" href="shopping.html">
     <link rel="stylesheet" href="style/style.css">
-
-    
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <!-- Header section -->
     <header>
+        <div class="search-container">
+            <form id="searchForm" action="#" method="GET">
+                <input type="text" id="searchInput" placeholder="Search products..." name="search">
+                <button type="submit"><i class="fa fa-search"></i></button>
+            </form>
+        </div>
+        <div class="profile-logo">
+            <a href="profile.html">
+                <i class="fas fa-user-circle"></i>
+            </a>
+        </div>
         <div class="title">
             <img src="img/Logo.jpg" alt="Ardior Logo">
         </div>
-        
-     
+        <div class="navlink">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shopping.html">Products</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main content section -->
+    <main>
+        <section class="products">
+            <!-- Product 1 -->
+            <div class="product" id="product1">
+                <a href="/product/1">
+                    <h3 id="productName1">Perfume Name1</h3>
+                    <p id="productPrice1">$4</p>
+                </a>
+                <button class="add-to-cart" data-name="Victorious" data-price="4">Add to Cart</button>
+            </div>
+            <!-- Product 2 -->
+            <div class="product" id="product2">
+                <a href="/product/2">
+                    <h3 id="productName2">Perfume Name2</h3>
+                    <p id="productPrice2">$7</p>
+                </a>
+                <button class="add-to-cart" data-name="Dior" data-price="6">Add to Cart</button>
+            </div>
+            <!-- Product 3 -->
+            <div class="product" id="product3">
+                <a href="/product/3">
+                    <h3 id="productName3">Dior</h3>
+                    <p id="productPrice3">$6</p>
+                </a>
+                <button class="add-to-cart" data-name="Tom Ford" data-price="4">Add to Cart</button>
+            </div>
+            <!-- Add more products as needed -->
+        </section>
+    </main>
+
+    <!-- Footer section -->
+    <footer>
+        <div class="logo">
+            <h1>Perfume & Cosmetics Store</h1>
+        </div>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="shopping.html">Products</a></li>
                 <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="cart.html">cart</a></li>
+                <li><a href="cart.html">Cart</a></li>
             </ul>
         </nav>
-    </header>
+        <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
+    </footer>
 
-
-
-
-
-
-
-
-
-    <!-- Products section -->
-<!-- Products section -->
-<section class="products">
-   <!-- HTML for adding products -->
-
-<div class="product">
-    <img src="perfume1.jpg" alt="Perfume 1">
-    <h3>Perfume Name1</h3>
-    <p>$4</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name1', 4)">Add to Cart</button>
-</div>
-
-<!-- HTML for adding products -->
-<div class="product">
-    <img src="perfume1.jpg" alt="Perfume 1">
-    <h3>Perfume Name2</h3>
-    <p>$4</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name2', 4)">Add to Cart</button>
-</div>
-
-<!-- HTML for adding products -->
-<div class="product">
-    <img src="perfume1.jpg" alt="Perfume 1">
-    <h3>Perfume Name3</h3>
-    <p>$4</p>
-    <button class="add-to-cart" onclick="addToCart('Perfume Name3', 4)">Add to Cart</button>
-</div>
-
-    <!-- Add more products as needed -->
-</section>
-
-
-
-
-
-
-
-
-
-
-
-    <!-- Add your JavaScript links here -->
-    <script src="cart.js"></script>
+    <!-- Script to handle adding items to cart -->
     <script>
-        // Function to add items to the cart and redirect to cart.html
-        function addToCart(name, price) {
-            // Add the item to cart (you can use AJAX to add to server-side cart as well)
-            // For now, we'll simply redirect to cart.html with the product details in the URL
-            window.location.href = `cart.html?product=${name}&price=${price}`;
-        }
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const name = this.getAttribute('data-name');
+                    const price = parseFloat(this.getAttribute('data-price'));
+                    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                    const existingItemIndex = cartItems.findIndex(item => item.name === name);
+                    if (existingItemIndex !== -1) {
+                        cartItems[existingItemIndex].quantity++;
+                    } else {
+                        cartItems.push({ name: name, price: price, quantity: 1 });
+                    }
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+                    window.location.href = 'cart.html';
+                });
+            });
+        });
     </script>
-    <script src="cart.js"></script>
-    <script src="stripe.js" type="module"></script>
 </body>
 </html>

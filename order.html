@@ -65,16 +65,40 @@
 
     <!-- Firebase and Stripe JavaScript code -->
     <script>
-        function displayProductDetails() {
-            const productList = document.getElementById('product-list');
-            // Retrieve product details from localStorage
-            let productDetails = JSON.parse(localStorage.getItem('productDetails')) || [];
-            productDetails.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `${item.name} - $${item.price}`;
-                productList.appendChild(listItem);
+        
+function displayProductDetails() {
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = ''; // Clear existing product details
+
+    // Retrieve product details from localStorage
+    let productDetails = JSON.parse(localStorage.getItem('productDetails')) || [];
+    
+    // Group products by name and calculate total price for each product
+    const productMap = new Map();
+    productDetails.forEach(item => {
+        const productName = item.name;
+        if (!productMap.has(productName)) {
+            productMap.set(productName, {
+                name: productName,
+                price: item.price,
+                quantity: 1
             });
+        } else {
+            const existingProduct = productMap.get(productName);
+            existingProduct.quantity++;
+            productMap.set(productName, existingProduct);
         }
+    });
+
+    // Display each product with its quantity and total price
+    productMap.forEach(product => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${product.name} - $${product.price} x ${product.quantity} = $${product.price * product.quantity}`;
+        productList.appendChild(listItem);
+    });
+}
+
+
         const firebaseConfig = {
             apiKey: "AIzaSyA0HQ-OBjuy39U4I5e2sHW_6scyrbvshgA",
             authDomain: "perfume-3c5fa.firebaseapp.com",

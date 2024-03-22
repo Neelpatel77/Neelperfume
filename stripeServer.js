@@ -26,10 +26,10 @@ app.post('/process_payment', async (req, res) => {
         // Extract token and products from the request body
         const { token, products } = req.body;
 
-        // Extract total amount from the request query parameters
-        const totalAmount = parseFloat(req.query.total);
+        // Calculate total amount based on the products
+        const totalAmount = calculateTotalAmount(products);
 
-        // Create a charge using the Stripe API with the extracted total amount
+        // Create a charge using the Stripe API with the calculated total amount
         const charge = await stripe.charges.create({
             amount: totalAmount * 100, // Convert amount to cents
             currency: 'usd',
@@ -38,15 +38,10 @@ app.post('/process_payment', async (req, res) => {
         });
 
         // Proceed with Firebase data submission only if payment is successful
-        saveOrderToFirebase(req.body)
-            .then(() => {
-                // Send a JSON response indicating successful payment
-                res.json({ success: true, message: 'Payment successful', charge });
-            })
-            .catch(error => {
-                console.error('Error saving order to Firebase:', error);
-                res.status(500).json({ error: 'An error occurred while saving order to Firebase' });
-            });
+        await saveOrderToFirebase(req.body);
+
+        // Send a JSON response indicating successful payment
+        res.json({ success: true, message: 'Payment successful', charge });
     } catch (error) {
         // Handle errors during payment processing
         console.error('Error processing payment:', error);
@@ -54,15 +49,20 @@ app.post('/process_payment', async (req, res) => {
     }
 });
 
+// Function to calculate total amount based on products
+function calculateTotalAmount(products) {
+    return products.reduce((total, product) => total + (product.price * product.quantity), 0);
+}
+
 // Function to save order details to Firebase
-function saveOrderToFirebase(orderData) {
-    return new Promise((resolve, reject) => {
-        // You need to implement Firebase database saving logic here
-        // Example:
-        // firebase.firestore().collection('orders').add(orderData)
-        //     .then(docRef => resolve(docRef))
-        //     .catch(error => reject(error));
-    });
+async function saveOrderToFirebase(orderData) {
+    // You need to implement Firebase database saving logic here
+    // Example:
+    // try {
+    //     await firebase.firestore().collection('orders').add(orderData);
+    // } catch (error) {
+    //     throw error;
+    // }
 }
 
 // Start the server
