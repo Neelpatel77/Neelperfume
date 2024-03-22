@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <script src="Allpagelogin.js" type="module"></script>
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order</title>
+</head>
+<body>
+   
+    <div id="content" class="hidden">
+
+    <h2>Your Order ID:</h2>
+    <p id="order-id"></p>
+
+    <script>
+        // Retrieve order ID from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const orderId = urlParams.get('orderId');
+
+        // Display the order ID on the page
+        document.getElementById('order-id').textContent = orderId;
+    </script>
+    </div>
+</body>
+</html>

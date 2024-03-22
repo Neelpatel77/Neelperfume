@@ -26,12 +26,12 @@ app.post('/process_payment', async (req, res) => {
         // Extract token and products from the request body
         const { token, products } = req.body;
 
-        // Calculate total amount based on products
-        const amount = calculateTotalAmount(products);
+        // Extract total amount from the request query parameters
+        const totalAmount = parseFloat(req.query.total);
 
-        // Create a charge using the Stripe API
+        // Create a charge using the Stripe API with the extracted total amount
         const charge = await stripe.charges.create({
-            amount: amount,
+            amount: totalAmount * 100, // Convert amount to cents
             currency: 'usd',
             source: token.id,
             description: 'Payment for order'
@@ -53,11 +53,6 @@ app.post('/process_payment', async (req, res) => {
         res.status(500).json({ error: 'An error occurred while processing payment' });
     }
 });
-
-// Function to calculate total amount based on products
-function calculateTotalAmount(products) {
-    return products.reduce((total, item) => total + (item.price * item.quantity), 0);
-}
 
 // Function to save order details to Firebase
 function saveOrderToFirebase(orderData) {

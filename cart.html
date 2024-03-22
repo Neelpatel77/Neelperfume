@@ -1,14 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="Allpagelogin.js" type="module" ></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
     <link rel="stylesheet" href="style/cart.css" >
-
+    <style>
+        /* Hide content initially */
+        #content {
+            display: none;
+        }
+        /* Show content after login check */
+        #content.visible {
+            display: block;
+        }
+    </style>
 </head>
-<body>
+<body>    
+      
     <header>
+  <div id="content" class="hidden">
+
         <div class="logo">
             <h1>Shopping Cart</h1>
         </div>
@@ -40,5 +54,6 @@
             getURLParams();
         });
     </script>
+    </div>
 </body>
 </html>

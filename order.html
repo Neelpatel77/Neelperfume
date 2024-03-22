@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="Allpagelogin.js" type="module" defer></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Firebase App (the core Firebase SDK) is always required and must be first -->
@@ -9,14 +10,25 @@
 
     <!-- Add Firebase Firestore -->
     <script src="https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore-compat.js"></script>
-
+<script src="Allpagelogin.js" type="module"></script>
     <title>Place Order</title>
     <script src="https://js.stripe.com/v3/"></script>
-
+  <style>
+        /* Hide content initially */
+        #content {
+            display: none;
+        }
+        /* Show content after login check */
+        #content.visible {
+            display: block;
+        }
+    </style>   
 <link rel="stylesheet" href="style/order.css">
-   
+  
 </head>
 <body>
+    <div id="content" class="hidden">
+
     <div class="checkout-form">
         <h2>Checkout Form</h2>
         <form id="checkoutForm">
@@ -76,58 +88,93 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // Retrieve total amount from localStorage when the page loads
         document.addEventListener('DOMContentLoaded', function() {
-            const totalAmount = localStorage.getItem('totalAmount');
-            document.getElementById('total-amount').textContent = parseFloat(totalAmount).toFixed(2);
-            console.log("Total Amount:", parseFloat(totalAmount).toFixed(2));
+    const totalAmount = localStorage.getItem('totalAmount');
+    document.getElementById('total-amount').textContent = parseFloat(totalAmount).toFixed(2);
 
-            // Retrieve product details from localStorage and display
-            displayProductDetails();
-        });
+    // Retrieve product details from localStorage and display
+    displayProductDetails();
+});
 
-        document.getElementById('submit').addEventListener('click', function(event) {
-            event.preventDefault(); // Prevent default form submission
+    document.getElementById('submit').addEventListener('click', function(event) {
+    event.preventDefault(); // Prevent default form submission
 
-            // Get form values
-            const name = document.getElementById('name').value;
-            const email = document.getElementById('email').value;
-            const address = document.getElementById('address').value;
-            const phone = document.getElementById('phone').value;
-            const suite = document.getElementById('suite').value;
+    // Generate a random order ID
+    const orderId = generateOrderId();
 
-            // Create a token with Stripe
-            stripe.createToken(cardElement).then(function(result) {
-                if (result.error) {
-                    var errorElement = document.getElementById('card-errors');
-                    errorElement.textContent = result.error.message;
-                } else {
-                    // Token created, send it to your server for payment processing
-                    console.log(result.token);
-                    // Proceed with Firebase data submission only if payment is successful
-                    db.collection("orders").add({
-                        name: name,
-                        email: email,
-                        address: address,
-                        phone: phone,
-                        suite: suite,
-                        products: getCartItems() // Include product details in the order
-                    })
-                    .then((docRef) => {
-                        console.log("Document written with ID: ", docRef.id);
-                        // Clear form after successful submission
-                        document.getElementById('checkoutForm').reset();
-                        alert('Order placed successfully!');
-                        // Set the email in localStorage
-                        localStorage.setItem('userEmail', email);
-                    })
-                    .catch((error) => {
-                        console.error("Error adding document: ", error);
-                        alert('Error placing order. Please try again.');
-                    });
-                }
+    // Get form values
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    const address = document.getElementById('address').value;
+    const phone = document.getElementById('phone').value;
+    const suite = document.getElementById('suite').value;
+
+    // Create a token with Stripe
+    stripe.createToken(cardElement).then(function(result) {
+        if (result.error) {
+            var errorElement = document.getElementById('card-errors');
+            errorElement.textContent = result.error.message;
+        } else {
+            // Token created, send it to your server for payment processing
+            console.log(result.token);
+            // Proceed with Firebase data submission only if payment is successful
+            db.collection("orders").add({
+                orderId: orderId, // Include the generated order ID
+                name: name,
+                email: email,
+                address: address,
+                phone: phone,
+                suite: suite,
+                products: getCartItems(), // Include product details in the order
+                totalAmount: parseFloat(localStorage.getItem('totalAmount')) // Include total amount in the order
+            })
+            .then((docRef) => {
+                console.log("Document written with ID: ", docRef.id);
+                // Clear form after successful submission
+                document.getElementById('checkoutForm').reset();
+                alert('Order placed successfully!');
+                // Set the email in localStorage
+                localStorage.setItem('userEmail', email);
+
+                // Send the orderId to Firebase
+                sendOrderIdToFirebase(orderId, docRef.id);
+
+                // Redirect to the track.html page with order ID
+                window.location.href = `track.html?orderId=${orderId}`;
+            })
+            .catch((error) => {
+                console.error("Error adding document: ", error);
+                alert('Error placing order. Please try again.');
             });
-        });
+        }
+    });
+});
+
+// Function to send the orderId to Firebase
+function sendOrderIdToFirebase(orderId, docId) {
+    db.collection("orders").doc(docId).update({
+        orderId: orderId
+    })
+    .then(() => {
+        console.log("Order ID updated successfully in Firebase");
+    })
+    .catch((error) => {
+        console.error("Error updating order ID in Firebase: ", error);
+    });
+}
+
+// Function to generate a random order ID
+function generateOrderId() {
+    // Logic to generate a random alphanumeric order ID
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const orderIdLength = 10;
+    let orderId = '';
+    for (let i = 0; i < orderIdLength; i++) {
+        orderId += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return orderId;
+}
+
 
         var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
         var elements = stripe.elements();
@@ -166,5 +213,20 @@
                 messageContainer.textContent = '';
             }, 4000);
         }
+
+           // Function to add dynamic styles
+           function addDynamicStyles(css) {
+            const styleElement = document.getElementById('dynamic-styles');
+            styleElement.textContent = css;
+        }
+
+        // Call toggleContentVisibility when the DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            toggleContentVisibility();
+        });
     </script>
-    <script
+    </div>
+
+
+</body>
+</html>
