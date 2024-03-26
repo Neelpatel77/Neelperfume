@@ -1,85 +1,104 @@
-var stripe = Stripe('pk_test_51OrWHjKFZxX1eOCTRBB3SZ5RwgDW3rRXydB51jOOousHRKFSEYvK26qLFW5x8SFafIMfgsBntpgCOHBll44Fg7iv003L386Poo');
-var elements = stripe.elements();
+// Define an array to store the cart items (acting as a simple database)
+let cartItems = [];
+let totalAmount = 0; // Add a global variable to store the total amount
 
-var card = elements.create('card', {
-    style: {
-        base: {
-            fontSize: '16px',
-            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-            color: '#32325d',
-        },
-    },
-    hidePostalCode: true,
-    classes: {
-        base: 'stripe-input',
-        complete: 'stripe-input--complete',
-        empty: 'stripe-input--empty',
-        focus: 'stripe-input--focus',
-        invalid: 'stripe-input--invalid',
-    }
-});
-card.mount('#card-element');
+// Function to add items to the cart
+function addToCart(name, price) {
+    let existingItem = cartItems.find(item => item.name === name);
 
-card.addEventListener('change', function(event) {
-    var displayError = document.getElementById('card-errors');
-    if (event.error) {
-        displayError.textContent = event.error.message;
+    if (existingItem) {
+        // If the product already exists in the cart, update its quantity
+        existingItem.quantity++;
     } else {
-        displayError.textContent = '';
+        // If the product is not in the cart, add it as a new item
+        cartItems.push({ name: name, price: price, quantity: 1 });
     }
-});
-var form = document.getElementById('payment-form');
-form.addEventListener('submit', function(event) {
-    event.preventDefault();
 
-    stripe.createToken(card).then(function(result) {
-        if (result.error) {
-            var errorElement = document.getElementById('card-errors');
-            errorElement.textContent = result.error.message;
-        } else {
-            // Retrieve total amount from localStorage and parse it as a number
-            const totalAmount = parseFloat(localStorage.getItem('totalAmount'));
+    // Update total amount
+    updateTotalAmount();
 
-            var orderData = {
-                token: result.token,
-                totalAmount: totalAmount // Include total amount in the order data
-            };
+    renderCart();
+}
 
-            fetch('/process_payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(orderData),
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                if (data.success) {
-                    // Payment successful, display a success message
-                    showMessage(data.message);
-                } else {
-                    // Payment failed, display an error message
-                    showMessage(data.error);
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                showMessage('An unexpected error occurred');
-            });
-        }
+// Function to remove items from the cart
+function removeFromCart(index) {
+    cartItems.splice(index, 1);
+
+    // Update total amount
+    updateTotalAmount();
+
+    renderCart();
+}
+
+// Function to increase quantity of items in the cart
+function increaseQuantity(index) {
+    cartItems[index].quantity++;
+
+    // Update total amount
+    updateTotalAmount();
+
+    renderCart();
+}
+
+// Function to decrease quantity of items in the cart
+function decreaseQuantity(index) {
+    if (cartItems[index].quantity > 1) {
+        cartItems[index].quantity--;
+
+        // Update total amount
+        updateTotalAmount();
+
+        renderCart();
+    }
+}
+
+// Function to calculate total amount
+function updateTotalAmount() {
+    totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+}
+
+// Function to render the cart
+function renderCart() {
+    const cartList = document.getElementById('cart-list');
+    const totalElement = document.getElementById('total');
+    let totalPrice = 0;
+
+    // Clear previous content
+    cartList.innerHTML = '';
+
+    // Iterate over cart items
+    cartItems.forEach((item, index) => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
+
+        const itemTotalPrice = item.price * item.quantity;
+        listItem.textContent += ` = $${itemTotalPrice}`;
+
+        // Add buttons to increase and decrease quantity
+        const increaseButton = document.createElement('button');
+        increaseButton.textContent = '+';
+        increaseButton.addEventListener('click', () => increaseQuantity(index));
+
+        const decreaseButton = document.createElement('button');
+        decreaseButton.textContent = '-';
+        decreaseButton.addEventListener('click', () => decreaseQuantity(index));
+
+        const removeButton = document.createElement('button'); // Create remove button
+        removeButton.textContent = 'Remove'; // Set remove button text
+        removeButton.addEventListener('click', () => removeFromCart(index)); // Add click event listener for removal
+
+        listItem.appendChild(increaseButton);
+        listItem.appendChild(decreaseButton);
+        listItem.appendChild(removeButton); // Append remove button to list item
+
+        // Add the list item to the cart
+        cartList.appendChild(listItem);
+
+        // Calculate total price
+        totalPrice += itemTotalPrice;
     });
-});
 
-
-// Function to display a message to the user
-function showMessage(messageText) {
-    var messageContainer = document.getElementById('payment-message');
-    messageContainer.classList.remove('hidden');
-    messageContainer.textContent = messageText;
-
-    setTimeout(function () {
-        messageContainer.classList.add('hidden');
-        messageContainer.textContent = '';
-    }, 4000);
+    // Update total price
+    totalAmount = totalPrice; // Update the totalAmount variable
+    totalElement.textContent = `Total: $${totalPrice}`;
 }

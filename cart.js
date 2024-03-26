@@ -1,7 +1,28 @@
-// Define a variable to store the cart items
-let cartItems = [];
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js';
+import { getFirestore, collection, addDoc,serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js';
+
+
+
+// Initialize Firebase app
+const firebaseConfig = {
+    apiKey: "AIzaSyDuvGchVXBrW_WPcHoTzi3vx7Utu4j05Dk",
+    authDomain: "testmarch25.firebaseapp.com",
+    projectId: "testmarch25",
+    storageBucket: "testmarch25.appspot.com",
+    messagingSenderId: "203762674130",
+    appId: "1:203762674130:web:a1e59d2109c37d3d56400b"
+  };
+
+const app = initializeApp(firebaseConfig);
+
+// Get a reference to the Firestore database
+const db = getFirestore(app);
+ let cartItems = [];
 let totalAmount = 0; // Add a global variable to store the total amount
 let productDetails = []; // Add a global variable to store product details
+ 
+ 
+// Rest of your code remains the same...
 
 // Load cart state from localStorage when the page loads
 document.addEventListener('DOMContentLoaded', function() {
@@ -97,6 +118,7 @@ function updateTotalAmount() {
     totalAmount = cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
 }
 // Function to render the cart
+// Function to render the cart
 function renderCart() {
     const cartList = document.getElementById('cart-list');
     const totalElement = document.getElementById('total');
@@ -140,7 +162,11 @@ function renderCart() {
     // Update total price
     totalAmount = totalPrice; // Update the totalAmount variable
     totalElement.textContent = `Total: $${totalPrice}`;
+
+    // Print current cart data to console
+    console.log("Current Cart Data:", cartItems);
 }
+
 
 // Function to extract URL parameters
 function getURLParams() {
@@ -155,17 +181,60 @@ function getURLParams() {
     }
 }
 
-function placeOrder() {
-    // Set the total amount in localStorage for retrieval on the checkout page
-    localStorage.setItem('totalAmount', totalAmount);
 
-    // Set product details in localStorage for retrieval on the checkout page
-    localStorage.setItem('productDetails', JSON.stringify(productDetails));
+document.getElementById('placeOrderBtn').addEventListener('click', async function() {
+    saveCartState();
+    
+    try {
+        await saveCartDataToFirebase();
+        localStorage.setItem('totalAmount', totalAmount);
+        // Redirect to the order page after a short delay
+        setTimeout(() => {
+            window.location.href = 'order.html';
 
-    window.location.href = 'order.html';
+         }, 500); // 1000 milliseconds (1 second) delay
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error: Cart data could not be sent to Firebase. Please try again later.");
+    }
+});
+
+
+async function saveCartDataToFirebase() {
+    try {
+        console.log("Attempting to save cart data to Firebase...");
+        console.log("Firestore database:", db); // Log the Firestore database object
+        console.log("Cart items to be saved:", cartItems);
+
+        // Use collection() method to access a collection
+        const cartRef = collection(db, 'carts');
+
+        // Add current timestamp to the data
+        const timestamp = serverTimestamp();
+
+        // Use addDoc() method to add a new document with an auto-generated ID
+        const newCartDocRef = await addDoc(cartRef, { cartItems: cartItems, timestamp: timestamp });
+
+        console.log("Cart data saved to Firebase successfully:", cartItems);
+        alert("Cart data sent to Firebase successfully!");
+
+        // Redirect to the order page
+        window.location.href = 'order.html';
+    } catch (error) {
+        console.error("Error saving cart data to Firebase:", error);
+        console.log("Error details:", error.message);
+        alert("Error: Cart data could not be sent to Firebase. Please try again later.");
+    }
 }
+
 
 // Call getURLParams() function when the DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     getURLParams();
 });
+
+ 
+
+
+//popup
+

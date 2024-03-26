@@ -62,3 +62,4 @@ onAuthStateChanged(auth, (user) => {
 // Listen for mouse movements and keypress events to reset the session timeout
 document.addEventListener("mousemove", resetSessionTimeout);
 document.addEventListener("keypress", resetSessionTimeout);
+

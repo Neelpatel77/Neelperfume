@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
 const app = express();
 
@@ -49,50 +50,6 @@ app.get(['/', '/product'], (req, res) => {
     }
 });
 
-// Serve login.html
-app.get('/login.html', (req, res) => {
-    try {
-        console.log('Serving login.html');
-        res.sendFile(path.resolve(__dirname, 'login.html'));
-    } catch (error) {
-        console.error('Error serving login.html:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Serve order.html
-app.get('/order.html', (req, res) => {
-    try {
-        console.log('Serving order.html');
-        res.sendFile(path.resolve(__dirname, 'order.html'));
-    } catch (error) {
-        console.error('Error serving order.html:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Serve cart.html
-app.get('/cart.html', (req, res) => {
-    try {
-        console.log('Serving cart.html');
-        res.sendFile(path.resolve(__dirname, 'cart.html'));
-    } catch (error) {
-        console.error('Error serving cart.html:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
-// Serve shopping.html
-app.get('/shopping.html', (req, res) => {
-    try {
-        console.log('Serving shopping.html');
-        res.sendFile(path.resolve(__dirname, 'shopping.html'));
-    } catch (error) {
-        console.error('Error serving shopping.html:', error);
-        res.status(500).send('Internal Server Error');
-    }
-});
-
 // Handle product routes
 app.get('/product/:id', (req, res) => {
     try {
@@ -117,23 +74,66 @@ app.get('/product/:id', (req, res) => {
     }
 });
 
-// Route for adding items to the cart
-app.post('/add_to_cart', (req, res) => {
+// Route for creating a Checkout Session
+app.post('/create_checkout_session', async (req, res) => {
     try {
-        const { id, name, price } = req.body;
-        // Check if the item is already in the cart
-        const existingItemIndex = cartItems.findIndex(item => item.id === id);
-        if (existingItemIndex !== -1) {
-            // If the item already exists in the cart, update its quantity
-            cartItems[existingItemIndex].quantity++;
-        } else {
-            // If the item is not in the cart, add it as a new item
-            cartItems.push({ id, name, price, quantity: 1 });
-        }
-        res.json({ success: true, message: 'Item added to cart successfully' });
+        // Retrieve cart items from the request body
+        const { products } = req.body;
+
+        // Calculate total amount based on the products
+        const totalAmount = products.reduce((total, product) => total + product.price * product.quantity, 0);
+
+        // Create a checkout session using the Stripe API
+        const session = await stripe.checkout.sessions.create({
+            payment_method_types: ['card'],
+            line_items: products.map(product => ({
+                price_data: {
+                    currency: 'usd',
+                    product_data: {
+                        name: product.name,
+                    },
+                    unit_amount: product.price * 100, // Amount in cents
+                },
+                quantity: product.quantity,
+            })),
+            mode: 'payment',
+            success_url: 'http://localhost:3000/success.html',
+            cancel_url: 'http://localhost:3000/cancel.html',
+        });
+
+        // Send the session ID to the client
+        res.json({ sessionId: session.id });
     } catch (error) {
-        console.error('Error adding item to cart:', error);
-        res.status(500).json({ error: 'An error occurred while adding item to cart' });
+        console.error('Error creating checkout session:', error);
+        res.status(500).json({ error: 'An error occurred while creating checkout session' });
+    }
+});
+
+
+// Route for processing payments
+app.post('/process_payment', async (req, res) => {
+    try {
+        console.log('Received payment request:', req.body); // Log the entire request body
+        // Extract token and total amount from the request body
+        const { token, totalAmount } = req.body;
+
+        // Print totalAmount to the console
+        console.log('Total Amount:', totalAmount);
+
+        // Create a charge using the Stripe API with the token and total amount
+        const charge = await stripe.charges.create({
+            amount: totalAmount * 100, // Convert amount to cents
+            currency: 'usd',
+            source: token.id,
+            description: 'Payment for order'
+        });
+
+        // Send a JSON response indicating successful payment
+        res.json({ success: true, message: 'Payment successful', charge });
+    } catch (error) {
+        // Handle errors during payment processing
+        console.error('Error processing payment:', error);
+        res.status(500).json({ error: 'An error occurred while processing payment' });
     }
 });
 

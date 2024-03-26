@@ -120,7 +120,7 @@ function displayProductDetails() {
     displayProductDetails();
 });
 
-    document.getElementById('submit').addEventListener('click', function(event) {
+document.getElementById('submit').addEventListener('click', async function(event) {
     event.preventDefault(); // Prevent default form submission
 
     // Generate a random order ID
@@ -165,6 +165,32 @@ function displayProductDetails() {
 
                 // Redirect to the track.html page with order ID
                 window.location.href = `track.html?orderId=${orderId}`;
+
+                // Now, initiate payment processing with Stripe
+                fetch('/process_payment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        token: result.token,
+                        totalAmount: parseFloat(localStorage.getItem('totalAmount'))
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Payment successful');
+                        // Handle success scenario
+                    } else {
+                        console.error('Payment failed:', data.error);
+                        // Handle failure scenario
+                    }
+                })
+                .catch(error => {
+                    console.error('Error processing payment:', error);
+                    // Handle error scenario
+                });
             })
             .catch((error) => {
                 console.error("Error adding document: ", error);
@@ -173,6 +199,7 @@ function displayProductDetails() {
         }
     });
 });
+
 
 // Function to send the orderId to Firebase
 function sendOrderIdToFirebase(orderId, docId) {

@@ -1,40 +1,86 @@
-<!-- cart.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <script src="Allpagelogin.js" type="module" ></script>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shopping Cart</title>
-    <link rel="stylesheet" href="style/cart.css" >
-    <style>
-        /* Hide content initially */
-        #content {
-            display: none;
+    <script type="module">
+ 
+ import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js';
+  import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js';
+  import {collection, addDoc } from 'https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js';
+
+  // Your Firebase config and other code...
+  const firebaseConfig = {
+  apiKey: "AIzaSyDuvGchVXBrW_WPcHoTzi3vx7Utu4j05Dk",
+  authDomain: "testmarch25.firebaseapp.com",
+  projectId: "testmarch25",
+  storageBucket: "testmarch25.appspot.com",
+  messagingSenderId: "203762674130",
+  appId: "1:203762674130:web:a1e59d2109c37d3d56400b"
+};
+        const app = initializeApp(firebaseConfig);
+        
+        // Get a reference to the Firestore database
+        const db = getFirestore(app);
+    </script>
+    <link rel="stylesheet" href="style/cart.css">
+    <style>/* Message container */
+        .message-container {
+            position: fixed;
+            top: 70%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            text-align: center;
         }
-        /* Show content after login check */
-        #content.visible {
-            display: block;
+        
+        /* Message heading */
+        .message h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
         }
-    </style>
+        
+        /* Message paragraph */
+        .message p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+        /* Button style */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            background-color: #007bff; /* Blue color */
+            color: white;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        
+        /* Button hover effect */
+        .btn:hover {
+            background-color: #0056b3; /* Darker blue color on hover */
+        }
+        </style>
 </head>
 <body>    
-      
+    <!-- your body content -->
     <header>
-  <div id="content" class="hidden">
-
-        <div class="logo">
-            <h1>Shopping Cart</h1>
+             <div class="logo">
+                <h1>Shopping Cart</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shopping.html">Products</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
         </div>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shopping.html">Products</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="cart.html">cart</a></li>
-            </ul>
-        </nav>
     </header>
 
     <div class="cart-items">
@@ -43,18 +89,21 @@
             <!-- Cart items will be listed here -->
         </ul>
     </div>
-
     <div class="checkout">
         <h3 id="total">Total: $0</h3>
-        <button type="button" onclick="placeOrder()">Place Order</button>
-    </div>
-    <script src="cart.js"></script>
-    <script>
-        // Call getURLParams() function when the DOM is loaded
-        document.addEventListener('DOMContentLoaded', function() {
-            getURLParams();
-        });
-    </script>
-    </div>
+
+        
+        <button type="button" id="placeOrderBtn">Place Order</button>
+     
+
+        <div class="message-container">
+            <div class="message">
+                <h2>Please confirm your cart before payment</h2>
+                <p>You will not be able to review after confirming. If any changes are required, press Cancel.</p>
+             </div>
+        </div>
+        
+
+    <script src="cart.js" type="module"></script>
 </body>
 </html>
