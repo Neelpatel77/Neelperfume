@@ -169,7 +169,7 @@ nav ul li a {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 20px;
-    padding: 50px 0;
+    padding: 20px 0;
 }
 
 .product {
@@ -185,6 +185,7 @@ nav ul li a {
     height: auto;
     border-radius: 5px;
     margin-bottom: 15px;
+    cursor: pointer;
 }
 
 .product h3 {
@@ -257,3 +258,79 @@ footer p {
     font-size: 44px; /* Adjust the font size as needed */
     color: #fff; /* Icon color */
 }
+
+/* CSS for search results container */
+/* CSS for search form */
+.search-form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+/* Style search input */
+.search-input {
+    padding: 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px 0 0 5px;
+    font-size: 16px;
+    width: 70%;
+}
+
+/* Style search button */
+.search-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.search-button:hover {
+    background-color: #45a049;
+}
+
+/* CSS for search results container */
+.search-results {
+    padding: 20px;
+}
+
+/* Style individual search result items */
+.search-result-item {
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-item h3 {
+    margin-top: 0;
+}
+
+.search-result-item p {
+    margin-bottom: 5px;
+}
+.search-container {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+#searchForm {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+/* Search input */
+ 
+
+     
+ 
+
+/* Search results item hover */
+#searchResults a:hover {
+    background-color: #f0f0f0;
+}
+ 

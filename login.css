@@ -2,14 +2,22 @@ body {
     font-family: Arial, sans-serif;
     background-color: #f2f2f2;
 }
+.logo{
 
+   display: flex;
+            justify-content: center;
+            align-items: center;
+             margin-top: 30px;
+             margin-bottom: -70px;
+             margin-right: 10px;
+}
 .container {
     max-width: 400px;
-    margin: 0 auto;
+    margin: 150px auto; /* Adjust vertical margin to center the form */
     padding: 20px;
-    background-color: #fff;
+    background-color: #333;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3); /* Increased box-shadow for a stronger 3D effect */
 }
 
 h2 {
@@ -22,7 +30,7 @@ button {
     display: block;
     width: 100%;
     margin-bottom: 10px;
-    padding: 10px;
+    padding: 12px; /* Increased padding for better spacing */
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -30,9 +38,10 @@ button {
 }
 
 button {
-    background-color: #4caf50;
+    background-color: #446c4c;
     color: #fff;
     cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
 }
 
 button:hover {
@@ -42,4 +51,19 @@ button:hover {
 p {
     text-align: center;
     color: #ff0000;
+}
+
+/* Add this CSS for animation */
+.form-container {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.form-container.active {
+    opacity: 1;
+}
+
+/* Cursor pointer for buttons */
+button {
+    cursor: pointer;
 }

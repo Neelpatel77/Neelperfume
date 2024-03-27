@@ -31,6 +31,7 @@ function login() {
         });
 }
 
+
 // Function to clear form fields
 function clearForm(formId) {
     const form = document.getElementById(formId);
@@ -39,3 +40,4 @@ function clearForm(formId) {
         inputs[i].value = '';
     }
 }
+

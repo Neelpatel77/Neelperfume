@@ -137,6 +137,22 @@ app.post('/process_payment', async (req, res) => {
     }
 });
 
+// Route for handling search queries
+app.get('/search', (req, res) => {
+    try {
+        const searchTerm = req.query.term.toLowerCase(); // Get the search term from the query parameters
+        const searchResults = productData.filter(product =>
+            product.name.toLowerCase().includes(searchTerm)
+        );
+
+        res.json(searchResults); // Return the search results as JSON
+    } catch (error) {
+        console.error('Error searching products:', error);
+        res.status(500).json({ error: 'An error occurred while searching products' });
+    }
+});
+
+
 // Start the server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

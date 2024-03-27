@@ -3,13 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Firebase App</title>
+    <link rel="icon" type="image/ico" href="/img/faviocn.ico">
+
+    <title>Ardior Login</title>
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
+    <style>
+    body {
+            background-image: url('./img/login_background_image.png'), linear-gradient(rgba(198, 26, 26, 0.5), rgba(0,0,0,0.5)); /* Path to your background image */
+            background-size: cover;
+            background-position: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .form-container h2{
+            color: #d9c08e;
+        }
+        
+    </style>
+    <div class="logo">
+    <img src="img/Logo.jpg" width="190px" height="60px">
+</div>
+    <div class="container">
     <!-- Login Form -->
-    <div id="loginForm">
-        <h2>Login</h2>
+    <div id="loginForm" class="form-container active">
+        <h2 color="#d9c08e">Login</h2>
         <input type="email" id="loginEmail" placeholder="Email" required>
         <input type="password" id="loginPassword" placeholder="Password" required>
         <button id="loginButton">Login</button> <!-- Using ID instead of onclick -->
@@ -17,14 +37,15 @@
     </div>
 
     <!-- Signup Form -->
-    <div id="signupForm">
-        <h2>Signup</h2>
+    <div id="signupForm" class="form-container">
+        <h2 color="#0c1204">Signup</h2>
         <input type="email" id="signupEmail" placeholder="Email" required>
         <input type="password" id="signupPassword" placeholder="Password" required>
         <button id="signupButton">Signup</button>
         <p id="signupMessage"></p>
     </div>
-
+    <button id="toggleFormButton">New user? Create account</button>
+</div>
    <!-- Firebase SDK -->
 <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js";
@@ -91,6 +112,34 @@
     // Adding event listener to signup button after the function definition
     document.getElementById('signupButton').addEventListener('click', signup);
     document.getElementById('loginButton').addEventListener('click', login);
+// Adding event listener to toggle between login and signup forms
+document.getElementById('toggleFormButton').addEventListener('click', function() {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const toggleButton = document.getElementById('toggleFormButton');
+    
+    if (loginForm.classList.contains('active')) {
+        loginForm.classList.remove('active');
+        signupForm.classList.add('active');
+        toggleButton.textContent = "Login";
+    } else {
+        loginForm.classList.add('active');
+        signupForm.classList.remove('active');
+        toggleButton.textContent = "New user? Create account";
+    }
+});
+
+// Adding event listener to redirect to login form if the user clicks on "Login" after toggling to signup form
+document.getElementById('loginButton').addEventListener('click', function() {
+    const loginForm = document.getElementById('loginForm');
+    const signupForm = document.getElementById('signupForm');
+    const toggleButton = document.getElementById('toggleFormButton');
+    
+    loginForm.classList.add('active');
+    signupForm.classList.remove('active');
+    toggleButton.textContent = "New user? Create account";
+});
+
 </script>
 
 <!-- Your login.js file -->
