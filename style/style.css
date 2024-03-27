@@ -69,38 +69,43 @@ nav ul li a {
 
 .navlink nav ul {
     margin-top: 5ex;
-}/* Search container styles */
+}
+
+/* Search container styles */
 .search-container {
     display: flex;
     align-items: center;
     margin-left: 0em;
-    width: 25%;
+    width: auto;
     position: relative; /* Add position relative to the search container */
 }
-
-/* Search input styles */
+ /* Search input styles */
 .search-container input[type=text] {
     flex: 1;
     padding: 8px;
     font-size: 17px;
     border: none;
-    width: 126%;
-
+    width:fit-content; /* Adjusted width to cover the available space */
     border-bottom: 1px solid #ccc;
 }
 
+
 /* Search button styles */
 .search-container button {
+ 
     position: absolute; /* Position the button absolutely */
-    right: 0; /* Align it to the right */
+    right: 0;
     top: 0; /* Align it to the top */
-    padding: 8px 0px;
+    padding: 8px;
+    margin-left: 110px; /* Adjust the margin to move the button slightly to the left */
+
     background: #ccc;
     font-size: 17px;
     border: none;
     cursor: pointer;
-    width :20%;
+    width: calc(33.33% - 17px); /* Set button width to one-third of its container minus 2px for border */
 }
+
 
 
 
@@ -259,8 +264,7 @@ footer p {
     color: #fff; /* Icon color */
 }
 
-/* CSS for search results container */
-/* CSS for search form */
+ /* CSS for search form */
 .search-form {
     display: flex;
     align-items: center;
@@ -273,7 +277,7 @@ footer p {
     border: 2px solid #ccc;
     border-radius: 5px 0 0 5px;
     font-size: 16px;
-    width: 70%;
+    width: 100%;
 }
 
 /* Style search button */
@@ -282,7 +286,7 @@ footer p {
     color: white;
     border: none;
     padding: 10px 20px;
-    border-radius: 0 5px 5px 0;
+    border-radius: 0 5px 5px 0 solid black;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
@@ -294,16 +298,22 @@ footer p {
 
 /* CSS for search results container */
 .search-results {
-    padding: 20px;
+    position: absolute; /* Position the container absolutely */
+    margin-top: 160px; /* Adjust the top position as needed */
+ margin-right: 600px;
+ margin-left: 40px; /* Adjust the right position as needed */
+    padding: 10px;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
 }
 
 /* Style individual search result items */
 .search-result-item {
-    background-color: #f9f9f9;
-    border-radius: 5px;
-    padding: 15px;
-    margin-bottom: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 3px;
+    padding: 2px;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .search-result-item h3 {
@@ -313,24 +323,25 @@ footer p {
 .search-result-item p {
     margin-bottom: 5px;
 }
-.search-container {
-    position: relative;
-    margin-bottom: 20px;
-}
 
 #searchForm {
     position: relative;
-    margin-bottom: 20px;
+    margin-bottom: 2px;
 }
 
 /* Search input */
- 
+.product-item {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-bottom: 2px;
+}
 
-     
- 
+.product-item h3 {
+    margin: 0;
+}
 
 /* Search results item hover */
 #searchResults a:hover {
     background-color: #f0f0f0;
 }
- 

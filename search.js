@@ -1,11 +1,20 @@
 document.addEventListener('DOMContentLoaded', function() {
     // Sample product data
     const products = [
-        { id: '1', name: 'Perfume Name1', price: 4 },
-        { id: '2', name: 'Perfume Name2', price: 7 },
-        { id: '3', name: 'Dior', price: 6 },
-        { id: '4', name: 'Tom Ford', price: 4 }
+        { id: '1', name: 'Perfume Name1'},
+        { id: '2', name: 'Tom Ford Ombre leather' },
+        { id: '3', name: 'Dior'},
+        { id: '4', name: 'Tom Ford'}
     ];
+
+    // Function to hide search results container
+    function hideSearchResults() {
+        const searchResults = document.getElementById('searchResults');
+        searchResults.style.display = 'none';
+    }
+
+    // Hide search results container initially
+    hideSearchResults();
 
     // Attach event listener to the search input field
     const searchInput = document.getElementById('searchInput');
@@ -19,8 +28,10 @@ document.addEventListener('DOMContentLoaded', function() {
         // Display the filtered products or clear search results if the search query is empty
         if (searchQuery === '') {
             clearSearchResults();
+            hideSearchResults(); // Hide search results when search query is empty
         } else {
             displayProducts(filteredProducts);
+            showSearchResults(); // Show search results when there is a search query
         }
     });
 
@@ -32,30 +43,38 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Function to display filtered products
-    function displayProducts(products) {
-        const searchResults = document.getElementById('searchResults');
-        searchResults.innerHTML = ''; // Clear previous search results
+   // Function to display filtered products
+function displayProducts(products) {
+    const searchResults = document.getElementById('searchResults');
+    searchResults.innerHTML = ''; // Clear previous search results
 
-        if (products.length === 0) {
-            searchResults.textContent = 'No products found.';
-        } else {
-            // Display each product
-            products.forEach(product => {
-                const productItem = document.createElement('div');
-                productItem.innerHTML = `
+    if (products.length === 0) {
+        searchResults.innerHTML = 'Product not found.';
+    } else {
+        // Display each product with styling
+        products.forEach(product => {
+            const productItem = document.createElement('div');
+            productItem.innerHTML = `
+                <div class="product-item">
                     <a href="/product/${product.id}">
                         <h3>${product.name}</h3>
-                        <p>$${product.price}</p>
                     </a>
-                `;
-                searchResults.appendChild(productItem);
-            });
-        }
+                </div>
+            `;
+            searchResults.appendChild(productItem);
+        });
     }
+}
 
     // Function to clear search results
     function clearSearchResults() {
         const searchResults = document.getElementById('searchResults');
         searchResults.innerHTML = ''; // Clear search results
+    }
+
+    // Function to show search results container
+    function showSearchResults() {
+        const searchResults = document.getElementById('searchResults');
+        searchResults.style.display = 'block';
     }
 });

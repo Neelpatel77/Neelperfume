@@ -3,15 +3,69 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Page</title>
-    <!-- Add your CSS links here -->
+    <title>Perfume & Cosmetics Store</title>
     <link rel="stylesheet" href="/style/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="icon" type="image/ico" href="/img/faviocn.ico">
+    <style>
+        /* Style for the back button */
+        .back-button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-    <div class="product">
-        <h3><%= product.name %></h3>
+    <header>
+        <div class="navlink">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="shopping.html">Products</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
+                    <li><a href="cart.html">Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="product-details">
+        <h2><%= product.name %></h2>
         <p>Price: $<%= product.price %></p>
-        <!-- Add more product details as needed -->
+        <img src="<%= imagePath %>" alt="<%= product.name %>">
+        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
     </div>
+
+    <footer>
+        <div class="logo">
+            <h1>Perfume & Cosmetics Store</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="shopping.html">Products</a></li>
+                <li><a href="aboutus.html">About Us</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+        </nav>
+        <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to navigate back in the browser history
+        function goBack() {
+            window.history.back();
+        }
+    </script>
 </body>
 </html>

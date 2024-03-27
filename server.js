@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 // Serve static files from the 'neelperfume' directory
 // Add this line before serving static files to set the correct MIME type for JavaScript files
 app.use(express.static(__dirname));
+app.use('/img/product-img', express.static(path.join(__dirname, 'neelperfume', 'img', 'product-img')));
 
 app.use(express.static('neelperfume', {
     setHeaders: (res, filePath) => {
@@ -31,9 +32,9 @@ app.set('view engine', 'ejs');
 
 // Sample product data
 const productData = [
-    { id: '1', name: 'Product 1', price: 10 },
-    { id: '2', name: 'Product 2', price: 20 },
-    { id: '3', name: 'Product 3', price: 30 }
+    { id: '1', name: 'Blue de Chenel', price: 240 },
+    { id: '2', name: 'Tom Ford Ombre Leather', price: 268 },
+    { id: '3', name: 'Dior 3', price: 250 }
 ];
 
 // Initialize an empty cart
@@ -62,8 +63,11 @@ app.get('/product/:id', (req, res) => {
 
         // Check if the product is found
         if (product) {
+            // Construct the image path based on the product ID
+            const imagePath = `/img/product-img/${productId}.webp`;
+
             // If the product is found, render the product.ejs view with the product data
-            res.render('product', { product });
+            res.render('product', { product, imagePath });
         } else {
             // If the product is not found, send a 404 Not Found response
             res.status(404).send('Product not found');
@@ -73,6 +77,8 @@ app.get('/product/:id', (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+
+
 
 // Route for creating a Checkout Session
 app.post('/create_checkout_session', async (req, res) => {

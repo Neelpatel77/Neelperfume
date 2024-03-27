@@ -17,14 +17,16 @@
 
     <!-- Header section -->
     <header>
+        <div class="search-container">  
+
         <form id="searchForm" action="/search" method="GET">
             <input type="text" id="searchInput" placeholder="Search products..." name="search">
             <button type="submit">Search</button>
         </form>
-    
+      </div>
         <!-- Container for displaying search results -->
         <div id="searchResults" class="search-results"></div>
-        
+      
         
         
         <div class="profile-logo">
@@ -71,8 +73,10 @@
         <section class="products">
             <!-- Product 1 -->
             <div class="product" id="product1">
-             <a href="/product/1">  <img src="img/product-img/blue de chenel.webp" > </a> 
-                <a href="/product/1"> <!-- Link to product 1 -->
+                <a href="/product/1">
+                    <img src="/img/product-img/1.webp" alt="Blue de Chenel">
+                </a> 
+                                <a href="/product/1"> <!-- Link to product 1 -->
                      <h3 id="productName1">Blue de Chenel</h3>
                     <p id="productPrice1">$240</p>
                 </a>
@@ -81,7 +85,7 @@
     
             <!-- Product 2 -->
             <div class="product" id="product2">
-                <a href="/product/2">  <img src="img/product-img/TomFord-Ombreleather.webp" > </a> 
+                <a href="/product/2">  <img src="img/product-img/2.webp" > </a> 
 
                 <a href="/product/2"> <!-- Link to product 2 -->
                      <h3 id="productName2">Tom Ford Ombrelether</h3>
@@ -92,7 +96,7 @@
     
             <!-- Product 3 -->
             <div class="product" id="product3">
-                <a href="/product/3">  <img src="img/product-img/Diorperfume.webp" > </a> 
+                <a href="/product/3">  <img src="img/product-img/3.webp" > </a> 
 
                 <a href="/product/3"> <!-- Link to product 3 -->
                      <h3 id="productName3">Dior</h3>
@@ -159,7 +163,7 @@
         }).catch((error) => {
             console.error("Error logging out:", error);
         });
-    }, 60 * 1000); // 1 minute
+    }, 6000 * 1000); // 1 minute
 }
 
 
