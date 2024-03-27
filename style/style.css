@@ -303,7 +303,7 @@ footer p {
  margin-right: 600px;
  margin-left: 40px; /* Adjust the right position as needed */
     padding: 10px;
-    background-color: white;
+    background-color: #446c4c;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     z-index: 1;
@@ -332,13 +332,18 @@ footer p {
 /* Search input */
 .product-item {
     padding: 5px;
-    border: 1px solid #ccc;
+   
     border-radius: 3px;
     margin-bottom: 2px;
 }
 
 .product-item h3 {
     margin: 0;
+}
+.product-item a{
+    text-decoration: none;
+    color: #d9c08e;
+
 }
 
 /* Search results item hover */

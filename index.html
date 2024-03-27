@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/ico" href="/img/faviocn.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.min.js"></script>
 
 </head>
 <body>
@@ -18,15 +19,14 @@
     <!-- Header section -->
     <header>
         <div class="search-container">  
-
-        <form id="searchForm" action="/search" method="GET">
-            <input type="text" id="searchInput" placeholder="Search products..." name="search">
-            <button type="submit">Search</button>
-        </form>
-      </div>
-        <!-- Container for displaying search results -->
-        <div id="searchResults" class="search-results"></div>
-      
+            <form id="searchForm" action="/search" method="GET">
+                <input type="text" id="searchInput" placeholder="Search products.." name="search">
+                <button type="submit"><i class="fas fa-search"></i></button>
+            </form> 
+            
+   </div>
+   <div id="searchResults" class="search-results"></div> <!-- Move search results outside of search-container -->
+ 
         
         
         <div class="profile-logo">
@@ -111,9 +111,7 @@
 
     <!-- Footer section -->
     <footer>
-        <div class="logo">
-            <h1>Perfume & Cosmetics Store</h1>
-        </div>
+      
         <nav>
       
                 <ul>
@@ -124,7 +122,9 @@
                 </ul>
             
         </nav>
-        <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
+      
+        <p>&copy; 2024 Ardior. All rights reserved.</p>
+       
     </footer>
 
 
