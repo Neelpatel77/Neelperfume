@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="icon" type="image/ico" href="/img/faviocn.ico">
+
     <style>
         /* Style for the back button */
         .back-button {
@@ -23,17 +24,33 @@
         .back-button:hover {
             background-color: #0056b3;
         }
+
+        /* Style for the add-to-cart button */
+        .add-to-cart-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-to-cart-button:hover {
+            background-color: #218838;
+        }
     </style>
 </head>
 <body>
-    <header>
+   <header>
         <div class="navlink">
             <nav>
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="shopping.html">Products</a></li>
-                    <li><a href="aboutus.html">About Us</a></li>
-                    <li><a href="cart.html">Cart</a></li>
+                    <li><a href="/index.html">Home</a></li>
+                    <li><a href="/shopping.html">Products</a></li>
+                    <li><a href="/aboutus.html">About Us</a></li>
+                    <li><a href="/cart.html">Cart</a></li>
                 </ul>
             </nav>
         </div>
@@ -43,7 +60,13 @@
         <h2><%= product.name %></h2>
         <p>Price: $<%= product.price %></p>
         <img src="<%= imagePath %>" alt="<%= product.name %>">
-        <button class="back-button" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+        <!-- Add to Cart button -->
+        <button class="add-to-cart"
+                data-product-name="<%= product.name %>"
+                data-product-price="<%= product.price %>">
+            Add to Cart
+        </button>
+        <button class="back-button" onclick="goBack()">Back</button>
     </div>
 
     <footer>
@@ -52,20 +75,58 @@
         </div>
         <nav>
             <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="shopping.html">Products</a></li>
-                <li><a href="aboutus.html">About Us</a></li>
-                <li><a href="cart.html">Cart</a></li>
+                <li><a href="/index.html">Home</a></li>
+                <li><a href="/shopping.html">Products</a></li>
+                <li><a href="/aboutus.html">About Us</a></li>
+                <li><a href="/cart.html">Cart</a></li>
             </ul>
         </nav>
         <p>&copy; 2024 Perfume & Cosmetics Store. All rights reserved.</p>
     </footer>
 
     <script>
-        // Function to navigate back in the browser history
-        function goBack() {
-            window.history.back();
+    // Function to navigate back in the browser history
+    function goBack() {
+        window.history.back();
+    }
+
+    // Define the addToCart function
+    function addToCart(name, price) {
+        // Check if cartItems is stored in localStorage
+        let cartItems = [];
+        const savedCartItems = localStorage.getItem('cartItems');
+        if (savedCartItems) {
+            cartItems = JSON.parse(savedCartItems);
         }
-    </script>
-</body>
+
+        // Check if the product is already in the cart
+        let existingItem = cartItems.find(item => item.name === name);
+
+        if (existingItem) {
+            // If the product is already in the cart, increase its quantity
+            existingItem.quantity++;
+        } else {
+            // If the product is not in the cart, add it as a new item
+            cartItems.push({ name: name, price: price, quantity: 1 });
+        }
+
+        // Save updated cartItems to localStorage
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+        // Redirect to cart.html after adding the product to the cart
+        window.location.href = "/cart.html";
+    }
+
+    // Add an event listener to the "Add to Cart" button
+    document.querySelector('.add-to-cart').addEventListener('click', function() {
+        const productName = this.getAttribute('data-product-name');
+        const productPrice = parseFloat(this.getAttribute('data-product-price'));
+        console.log('Adding product to cart:', productName, productPrice);
+        
+        // Call the addToCart function with product details
+        addToCart(productName, productPrice);
+    });
+</script>
+
+ </body>
 </html>

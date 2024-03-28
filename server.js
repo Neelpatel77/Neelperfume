@@ -32,9 +32,16 @@ app.set('view engine', 'ejs');
 
 // Sample product data
 const productData = [
-    { id: '1', name: 'Blue de Chenel', price: 240 },
-    { id: '2', name: 'Tom Ford Ombre Leather', price: 268 },
-    { id: '3', name: 'Dior 3', price: 250 }
+ 
+        { id: '1', name: 'Blue de chennel', price: '240'},
+        { id: '2', name: 'Tom Ford Ombre leather', price: '240' },
+        { id: '3', name: 'Dior', price: '240'},
+        { id: '4', name: 'Dior Ford', price: '240'},
+        { id: '5', name: 'Dior tatti', price: '240'},
+        { id: '6', name: 'dior sex', price: '240' },
+        { id: '7', name: 'Dior perfme', price: '240'},
+        { id: '8', name: 'Dior Madarchod', price: '240'}
+    
 ];
 
 // Initialize an empty cart
